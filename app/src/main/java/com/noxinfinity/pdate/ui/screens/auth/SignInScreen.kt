@@ -25,7 +25,6 @@ fun LoginScreen(onLogin: () -> Unit, toMainScreen: () -> Unit, viewModel: AuthVi
     val authState by viewModel.authState.collectAsState()
 
     LaunchedEffect(authState.isSuccess) {
-
         if (authState.isSuccess) {
             Log.d("STATE","LoginScreen: ${authState.isSuccess}")
 //            toMainScreen()

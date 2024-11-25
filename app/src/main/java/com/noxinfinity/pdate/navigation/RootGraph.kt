@@ -33,7 +33,9 @@ fun RootGraph(viewModel: AuthViewModel, onLogin: () -> Unit) {
 
         composable(Graph.ONBOARDING) {
             OnboardingScreen(
-                rootNavController = navController
+                viewModel = viewModel,
+                onLogin = onLogin,
+                rootNavController = navController,
             )
         }
 
