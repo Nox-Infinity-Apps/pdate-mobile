@@ -54,10 +54,13 @@ class AuthViewModel @Inject constructor(
     }
 
     public fun signOut(onSuccess: () -> Unit) {
-        auth.signOut()
-        sharedPreferences.clearToken()
         googleSignInClient.signOut().addOnCompleteListener {
-            _authState.value = _authState.value.copy(isLoggedIn = false).copy(isSuccess = false)
+            auth.signOut()
+            sharedPreferences.clearToken()
+            _authState.value = _authState.value.copy(
+                isLoggedIn = false,
+                isSuccess = false
+            )
             Log.d("SIGN_OUT", "User signed out")
             onSuccess()
         }

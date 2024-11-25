@@ -34,6 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.noxinfinity.pdate.R
@@ -50,12 +51,14 @@ fun OnboardingScreen(
     rootNavController: NavHostController) {
     val systemUiController = rememberSystemUiController()
     val useDarkIcons = isSystemInDarkTheme()
-    val authState by viewModel.authState.collectAsState()
+    val authViewModel: AuthViewModel = hiltViewModel()
+    val authState by authViewModel.authState.collectAsState()
 
-    LaunchedEffect(authState.isSuccess) {
-        if (authState.isSuccess) {
+    LaunchedEffect(authState.isLoggedIn) {
+        if (authState.isLoggedIn) {
             Log.d("STATE","Onboading screen: ${authState.isSuccess}")
             rootNavController.navigate(Graph.MAIN) {
+                Log.d("REDIRECT","Redirect to main screen")
                 popUpTo(rootNavController.graph.startDestinationId) {
                     inclusive = true
                 }

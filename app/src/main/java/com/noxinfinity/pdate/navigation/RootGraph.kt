@@ -1,9 +1,11 @@
 package com.noxinfinity.pdate.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -18,20 +20,25 @@ fun RootGraph(viewModel: AuthViewModel, onLogin: () -> Unit) {
     val navController = rememberNavController()
     val isLoggedIn by viewModel.authState.collectAsState()
 
-    LaunchedEffect(isLoggedIn) {
-        if (isLoggedIn.isLoggedIn) {
-            navController.navigate(Graph.MAIN) {
-                popUpTo(navController.graph.startDestinationId) {
-                    inclusive = true
+
+    LaunchedEffect(Unit) {
+        snapshotFlow { isLoggedIn }
+            .collect { authState ->
+                if (authState.isLoggedIn) {
+                    Log.d("NAVIGATION_STATE", "isLoggedIn = ${isLoggedIn.isLoggedIn}")
+                    navController.navigate(Graph.MAIN) {
+                        popUpTo(navController.graph.startDestinationId) {
+                            inclusive = true
+                        }
+                    }
+                } else {
+                    navController.navigate(Graph.ONBOARDING) {
+                        popUpTo(navController.graph.startDestinationId) {
+                            inclusive = true
+                        }
+                    }
                 }
             }
-        }else{
-            navController.navigate(Graph.ONBOARDING) {
-                popUpTo(navController.graph.startDestinationId) {
-                    inclusive = true
-                }
-            }
-        }
     }
 
     NavHost(

@@ -43,7 +43,6 @@ fun HomeHeader(
 ) {
     val viewModel: AuthViewModel = hiltViewModel()
 
-
     val onSignOut = {
         viewModel.signOut{
             rootNavController.navigate(Graph.ONBOARDING) {
