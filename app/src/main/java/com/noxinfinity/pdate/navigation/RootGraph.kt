@@ -14,7 +14,7 @@ fun RootGraph(viewModel: AuthViewModel, onLogin: () -> Unit) {
     NavHost(
         route = Graph.ROOT,
         navController = navController,
-        startDestination = Graph.LOGIN,
+        startDestination = Graph.MAIN,
     ) {
         composable(Graph.LOGIN) {
             LoginScreen(

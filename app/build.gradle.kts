@@ -106,6 +106,7 @@ dependencies {
     implementation (libs.firebase.auth.ktx)
     implementation(libs.play.services.auth)
     implementation(libs.firebase.common.ktx)
+    implementation(libs.firebase.messaging)
 
     //Stream chat
     implementation(libs.stream.chat.android.ui.components)
