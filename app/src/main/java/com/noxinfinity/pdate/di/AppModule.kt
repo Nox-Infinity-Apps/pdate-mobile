@@ -7,6 +7,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.noxinfinity.pdate.R
+import com.noxinfinity.pdate.data.data_source.local.SharedPreferencesManager
 import com.noxinfinity.pdate.data.repository.home.HomeRepository
 import com.noxinfinity.pdate.utils.Constants
 import dagger.Module
@@ -21,6 +22,15 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class AppModule {
+
+    @Singleton
+    @Provides
+    fun provideSharedPreferencesManager(
+        @ApplicationContext context: Context
+    ): SharedPreferencesManager {
+        return SharedPreferencesManager(context)
+    }
+
     @Provides
     @Singleton
     fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()

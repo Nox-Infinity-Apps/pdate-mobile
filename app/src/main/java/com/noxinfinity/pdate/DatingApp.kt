@@ -15,5 +15,6 @@ class DatingApp : Application() {
         ChatClient.Builder(getString(R.string.stream_key), this)
             .logLevel(ChatLogLevel.ALL)
             .build()
+
     }
 }

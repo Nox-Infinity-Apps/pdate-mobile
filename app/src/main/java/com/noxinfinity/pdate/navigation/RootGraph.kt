@@ -1,6 +1,10 @@
 package com.noxinfinity.pdate.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -12,10 +16,22 @@ import com.noxinfinity.pdate.ui.view_models.auth.AuthViewModel
 @Composable
 fun RootGraph(viewModel: AuthViewModel, onLogin: () -> Unit) {
     val navController = rememberNavController()
+    val isLoggedIn by viewModel.authState.collectAsState()
+
+    LaunchedEffect(isLoggedIn) {
+        if (isLoggedIn.isLoggedIn) {
+            navController.navigate(Graph.MAIN) {
+                popUpTo(navController.graph.startDestinationId) {
+                    inclusive = true
+                }
+            }
+        }
+    }
+
     NavHost(
         route = Graph.ROOT,
         navController = navController,
-        startDestination = Graph.ONBOARDING,
+        startDestination = Graph.MAIN,
     ) {
         composable(Graph.LOGIN) {
             LoginScreen(
