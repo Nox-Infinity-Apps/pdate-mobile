@@ -25,13 +25,19 @@ fun RootGraph(viewModel: AuthViewModel, onLogin: () -> Unit) {
                     inclusive = true
                 }
             }
+        }else{
+            navController.navigate(Graph.ONBOARDING) {
+                popUpTo(navController.graph.startDestinationId) {
+                    inclusive = true
+                }
+            }
         }
     }
 
     NavHost(
         route = Graph.ROOT,
         navController = navController,
-        startDestination = Graph.MAIN,
+        startDestination = Graph.ONBOARDING,
     ) {
         composable(Graph.LOGIN) {
             LoginScreen(

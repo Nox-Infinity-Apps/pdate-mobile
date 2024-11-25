@@ -39,7 +39,6 @@ class AuthViewModel @Inject constructor(
             auth.signInWithCredential(credential).addOnCompleteListener{
                 if(it.isSuccessful) {
                     val user = auth.currentUser
-                    Log.d("ID TOKEN", idToken)
                     _authState.value = _authState.value.copy(isSuccess = true).copy(isLoggedIn = true)
                     sharedPreferences.saveToken(idToken)
 
@@ -50,10 +49,10 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    fun signOut() {
+    public fun signOut() {
         auth.signOut()
         sharedPreferences.clearToken()
+        Log.d("SIGN_OUT", "User signed out")
         _authState.value = _authState.value.copy(isLoggedIn = false)
     }
-
 }
