@@ -30,7 +30,7 @@ fun GradientButton(title: String, labelColor: Color = Color(0xff0f0a09), modifie
                 shape = RoundedCornerShape(999.dp)
             ).padding(vertical = 5.dp, horizontal = 24.dp),
         interactionSource = remember { MutableInteractionSource() },
-        elevation = ButtonDefaults.buttonElevation(0.dp)
+        elevation = ButtonDefaults.buttonElevation(0.dp),
     ) {
         Text(
             text = title,
