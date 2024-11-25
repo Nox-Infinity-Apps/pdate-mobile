@@ -3,6 +3,7 @@ package com.noxinfinity.pdate.ui.view_models.auth
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
 import javax.inject.Inject
 import com.google.firebase.auth.GoogleAuthProvider
@@ -20,6 +21,9 @@ class AuthViewModel @Inject constructor(
 
     private val _authState = MutableStateFlow(AuthState())
     val authState: StateFlow<AuthState> = _authState
+
+    @Inject
+    lateinit var googleSignInClient: GoogleSignInClient
 
     init {
         checkLoginState()
@@ -49,10 +53,13 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    public fun signOut() {
+    public fun signOut(onSuccess: () -> Unit) {
         auth.signOut()
         sharedPreferences.clearToken()
-        Log.d("SIGN_OUT", "User signed out")
-        _authState.value = _authState.value.copy(isLoggedIn = false)
+        googleSignInClient.signOut().addOnCompleteListener {
+            _authState.value = _authState.value.copy(isLoggedIn = false).copy(isSuccess = false)
+            Log.d("SIGN_OUT", "User signed out")
+            onSuccess()
+        }
     }
 }

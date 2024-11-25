@@ -81,6 +81,7 @@ fun MainScreen(
         }
     ) { innerPadding ->
         MainGraph(
+            rootNavController= rootNavController,
             navController = navController,
             modifier = Modifier.padding(innerPadding),
         )

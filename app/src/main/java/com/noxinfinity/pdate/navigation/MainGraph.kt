@@ -12,7 +12,9 @@ import com.noxinfinity.pdate.ui.screens.profile.ProfileScreen
 
 
 @Composable
-fun MainGraph(navController: NavHostController, modifier: Modifier = Modifier) {
+fun MainGraph(
+    rootNavController: NavHostController,
+    navController: NavHostController, modifier: Modifier = Modifier) {
     NavHost(
         navController = navController,
         route = Graph.MAIN,
@@ -20,7 +22,10 @@ fun MainGraph(navController: NavHostController, modifier: Modifier = Modifier) {
         modifier = modifier
     ) {
         composable(Graph.HOME) {
-            HomeScreen()
+            HomeScreen(
+                rootNavController = rootNavController,
+                navController = navController,
+            )
         }
         composable(Graph.NEARBY) {
             PlaceHolder()

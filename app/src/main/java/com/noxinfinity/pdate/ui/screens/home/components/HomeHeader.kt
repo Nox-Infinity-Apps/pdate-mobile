@@ -25,20 +25,33 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.noxinfinity.pdate.R
 import com.noxinfinity.pdate.navigation.Graph
 import com.noxinfinity.pdate.ui.view_models.auth.AuthViewModel
 import com.noxinfinity.pdate.utils.widthPadding
 
+/**
+ * Ý là mình không DI navcontroller được à đcm
+ */
 @Composable
 fun HomeHeader(
+    rootNavController: NavController,
+    navController: NavController,
     modifier: Modifier = Modifier
 ) {
     val viewModel: AuthViewModel = hiltViewModel()
 
+
     val onSignOut = {
-        viewModel.signOut()
+        viewModel.signOut{
+            rootNavController.navigate(Graph.ONBOARDING) {
+                popUpTo(rootNavController.graph.startDestinationId) {
+                    inclusive = true
+                }
+            }
+        }
     }
 
     Row(
@@ -87,10 +100,4 @@ fun HomeHeader(
             )
         }
     }
-}
-
-@Preview(name = "HomeHeader")
-@Composable
-private fun PreviewHomeHeader() {
-    HomeHeader()
 }
