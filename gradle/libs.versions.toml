@@ -34,6 +34,7 @@ composeMaterial = "1.4.0"
 firebaseCommonKtx = "21.0.0"
 firebaseAuth = "23.1.0"
 apollo = "4.0.0"
+firebaseMessagingKtx = "24.1.0"
 
 
 [libraries]
@@ -85,6 +86,7 @@ swipeablecard = { module = "com.alexstyl.swipeablecard:swipeablecard", version.r
 firebase-common-ktx = { group = "com.google.firebase", name = "firebase-common-ktx", version.ref = "firebaseCommonKtx" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 apollo-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo"}
+firebase-messaging-ktx = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebaseMessagingKtx" }
 
 
 [plugins]

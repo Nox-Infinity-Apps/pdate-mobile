@@ -1,12 +1,12 @@
 package com.noxinfinity.pdate.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.noxinfinity.pdate.ui.screens.auth.LoginScreen
 import com.noxinfinity.pdate.ui.screens.main.MainScreen
+import com.noxinfinity.pdate.ui.screens.onboading.OnboardingScreen
 import com.noxinfinity.pdate.ui.view_models.auth.AuthViewModel
 
 @Composable
@@ -15,7 +15,7 @@ fun RootGraph(viewModel: AuthViewModel, onLogin: () -> Unit) {
     NavHost(
         route = Graph.ROOT,
         navController = navController,
-        startDestination = Graph.MAIN,
+        startDestination = Graph.ONBOARDING,
     ) {
         composable(Graph.LOGIN) {
             LoginScreen(
@@ -30,6 +30,13 @@ fun RootGraph(viewModel: AuthViewModel, onLogin: () -> Unit) {
                 viewModel
             )
         }
+
+        composable(Graph.ONBOARDING) {
+            OnboardingScreen(
+                rootNavController = navController
+            )
+        }
+
         composable(Graph.MAIN) {
             MainScreen(
                 rootNavController = navController,

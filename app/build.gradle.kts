@@ -65,6 +65,7 @@ dependencies {
     //Hilt
     implementation(libs.hilt.android)
     implementation (libs.androidx.hilt.navigation.compose)
+    implementation(libs.firebase.messaging.ktx)
     kapt(libs.hilt.android.compiler)
 
     //DataStore

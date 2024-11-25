@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Icon
@@ -24,17 +25,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.noxinfinity.pdate.R
 import com.noxinfinity.pdate.ui.common.components.GradientButton
+import com.noxinfinity.pdate.utils.theme.samsungSansFonts
 
 @Composable
-fun OnboardingScreen(modifier: Modifier = Modifier) {
+fun OnboardingScreen(rootNavController: NavHostController, modifier: Modifier = Modifier) {
     val systemUiController = rememberSystemUiController()
     val useDarkIcons = !isSystemInDarkTheme()
 
@@ -77,7 +82,7 @@ fun OnboardingScreen(modifier: Modifier = Modifier) {
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 40.dp)
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = 16.dp).systemBarsPadding() ,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Icon(ChatHeart, contentDescription = null, tint = Color(0xffffa2a5), modifier = Modifier.size(80.dp))
@@ -94,7 +99,8 @@ fun OnboardingScreen(modifier: Modifier = Modifier) {
                 color = Color(0xffa6a3a4),
                 style = MaterialTheme.typography.titleSmall,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                fontFamily = samsungSansFonts
             )
             Spacer(modifier = Modifier.height(32.dp))
             GradientButton("Bắt đầu", modifier = Modifier.padding(top = 16.dp), colors = listOf(Color(0xfffeadd4), Color(0xfffea6a4)), labelFontSize = 18.sp, textModifier = Modifier.width(200.dp)) {
@@ -107,5 +113,7 @@ fun OnboardingScreen(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 fun OnboardingScreenPreview() {
-    OnboardingScreen()
+    OnboardingScreen(
+        rootNavController = NavHostController(LocalContext.current)
+    )
 }

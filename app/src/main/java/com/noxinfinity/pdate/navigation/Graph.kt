@@ -9,4 +9,5 @@ object Graph {
     const val LOVE = "love_graph"
     const val PROFILE = "profile_graph"
     const val NEARBY = "nearby_graph"
+    const val ONBOARDING = "onboarding_graph"
 }

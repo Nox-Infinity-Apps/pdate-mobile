@@ -1,5 +1,6 @@
 package com.noxinfinity.pdate.ui.screens.theme
 
+import SamsungSansTypography
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -51,7 +52,7 @@ fun DatingApplicationTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = SamsungSansTypography,
         content = content
     )
 }
