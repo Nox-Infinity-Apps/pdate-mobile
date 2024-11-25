@@ -1,6 +1,7 @@
 package com.noxinfinity.pdate.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -35,5 +36,4 @@ fun RootGraph(viewModel: AuthViewModel, onLogin: () -> Unit) {
             )
         }
     }
-
 }

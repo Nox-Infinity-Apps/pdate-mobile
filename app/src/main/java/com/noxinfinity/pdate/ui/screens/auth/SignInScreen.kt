@@ -12,8 +12,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.noxinfinity.pdate.ui.screens.chat.ChatScreen
+import com.noxinfinity.pdate.ui.screens.theme.DatingApplicationTheme
 import com.noxinfinity.pdate.ui.view_models.auth.AuthViewModel
 
 
@@ -37,7 +40,7 @@ fun LoginScreen(onLogin: () -> Unit, toMainScreen: () -> Unit, viewModel: AuthVi
         Button(
             onClick = onLogin
         ) {
-            Text(text = "Sign In With Google")
+            Text(text = "Sign In With cc")
         }
     }
 }

@@ -31,7 +31,8 @@ class MainActivity : ComponentActivity() {
             try {
                 val account = task.getResult(Exception::class.java)
 
-//                Log.d("GOOGLE ACCOUNT", account.)
+
+                Log.d("GOOGLE ACCOUNT ", account.idToken.toString())
 
                 account?.idToken?.let {
                     authViewModel.firebaseAuthWithGoogle(it)
@@ -49,6 +50,4 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
-
 }

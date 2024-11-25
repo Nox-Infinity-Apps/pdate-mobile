@@ -27,7 +27,7 @@ import com.noxinfinity.pdate.utils.heightPadding
 fun ChatStoryItem(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
-    text: String = "John Doe from rule 34",
+    text: String = "John Doe from rule 34ssss",
     image: @Composable () -> Unit = {
         Image(
             painter = painterResource(id = R.drawable.default_avatar),

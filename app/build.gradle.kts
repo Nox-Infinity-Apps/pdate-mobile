@@ -60,6 +60,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.35.0-alpha")
+
     //Hilt
     implementation(libs.hilt.android)
     implementation (libs.androidx.hilt.navigation.compose)
