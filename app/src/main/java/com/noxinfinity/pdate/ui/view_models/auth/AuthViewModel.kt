@@ -50,12 +50,10 @@ class AuthViewModel @Inject constructor(
                             if (accessToken != null) {
                                 sharedPreferences.saveToken(accessToken)
                                 Log.d("ACCESS_TOKEN DMTRI", accessToken.toString())
-                            }else{
-                                throw Exception("Failed to get access token")
                             }
-                        } else {
-                            Log.d("ACCESS_TOKEN", "Failed to get access token")
                         }
+                    }?.addOnFailureListener {
+                        throw Exception("Failed to get access token")
                     }
                 } else {
                     Log.d("GOOGLE", "firebaseAuthWithGoogle: ${it.exception}")
