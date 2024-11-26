@@ -43,7 +43,7 @@ class AuthViewModel @Inject constructor(
             auth.signInWithCredential(credential).addOnCompleteListener{
                 if(it.isSuccessful) {
                     val user = auth.currentUser
-                    _authState.value = _authState.value.copy(isSuccess = true).copy(isLoggedIn = true)
+                    _authState.value = _authState.value.copy(isSuccess = true, isLoggedIn = true)
                     user?.getIdToken(true)?.addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             val accessToken = task.result?.token

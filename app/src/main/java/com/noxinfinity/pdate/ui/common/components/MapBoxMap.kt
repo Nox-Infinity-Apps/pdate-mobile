@@ -1,5 +1,6 @@
 package com.noxinfinity.pdate.ui.common.components
 
+import android.graphics.Bitmap
 import androidx.compose.runtime.Composable;
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,7 +29,8 @@ fun MapBoxMap(
 		) {
 	val context = LocalContext.current
 	val marker = remember(context) {
-		context.getDrawable(R.drawable.ic_heart)!!.toBitmap()
+		val originalMarker = context.getDrawable(R.drawable.ic_heart)!!.toBitmap()
+		Bitmap.createScaledBitmap(originalMarker, 64, 64, false)
 	}
 	var pointAnnotationManager: PointAnnotationManager? by remember {
 		mutableStateOf(null)
@@ -52,6 +54,7 @@ fun MapBoxMap(
 			it.create(pointAnnotationOptions)
 			mapView.getMapboxMap()
 					.flyTo(CameraOptions.Builder().zoom(16.0).center(point).build())
+
 		}
 	}
 	NoOpUpdate
