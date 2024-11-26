@@ -1,11 +1,20 @@
 package com.noxinfinity.pdate.navigation
 
+import android.Manifest
+import android.content.pm.PackageManager
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.app.ActivityCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.mapbox.geojson.Point
+import com.noxinfinity.pdate.MainActivity
 import com.noxinfinity.pdate.ui.common.components.MapBoxMap
 import com.noxinfinity.pdate.ui.screens.chat.ChatScreen
 import com.noxinfinity.pdate.ui.screens.common.PlaceHolder
@@ -18,6 +27,38 @@ import io.getstream.chat.android.compose.ui.theme.ChatTheme
 fun MainGraph(
     rootNavController: NavHostController,
     navController: NavHostController, modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+
+    val fusedLocationClient = remember {
+        com.google.android.gms.location.LocationServices.getFusedLocationProviderClient(context)
+    }
+    var currentLocationPoint by remember {
+        mutableStateOf<Point?>(null)
+    }
+
+    if (ActivityCompat.checkSelfPermission(
+            context,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+            context,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ) != PackageManager.PERMISSION_GRANTED
+    ) {
+        ActivityCompat.requestPermissions(
+            context as MainActivity,
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ),
+            1
+        )
+    }
+    fusedLocationClient.lastLocation.addOnSuccessListener {
+        currentLocationPoint = Point.fromLngLat(it.longitude, it.latitude)
+    }
+
+
+
     NavHost(
         navController = navController,
         route = Graph.MAIN,
@@ -33,10 +74,7 @@ fun MainGraph(
         composable(Graph.NEARBY) {
             MapBoxMap(
                 modifier = Modifier,
-                point = Point.fromLngLat(
-                    21.0122,
-                    52.2297
-                )
+                point = currentLocationPoint
             )
         }
         composable(Graph.CHAT) {

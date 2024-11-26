@@ -28,6 +28,7 @@ fun MapBoxMap(
 	point: Point?,
 		) {
 	val context = LocalContext.current
+
 	val marker = remember(context) {
 		val originalMarker = context.getDrawable(R.drawable.ic_heart)!!.toBitmap()
 		Bitmap.createScaledBitmap(originalMarker, 64, 64, false)
