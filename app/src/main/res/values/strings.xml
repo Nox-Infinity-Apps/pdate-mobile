@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">PDate</string>
+    <string name="app_name">P-Date</string>
     <string name="web_client_id">788183134168-p0315ds2gq50l46lnsjr2rce9q8d5enr.apps.googleusercontent.com</string>
     <string name="stream_key">625kk64h8kah</string>
     <string name="stream_secret">mq8jju7u228m5k86gf2a8tb5jsz24rkqd9w2h7t952fxvzvw9k2a2abrxx5dhky2</string>
+    <string name="mapbox_access_token">pk.eyJ1IjoibjB4Z2cwNCIsImEiOiJjbHA1YXB1ZTMxY2tuMmlucmVnb3hyYTZwIn0.uRteNxFzKPEwgUd1CLq80g</string>
 </resources>

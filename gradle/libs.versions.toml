@@ -1,5 +1,6 @@
 [versions]
 agp = "8.6.0"
+android = "10.14.0"
 coilCompose = "2.7.0"
 composeShimmer = "1.3.1"
 coreSplashscreen = "1.0.1"
@@ -28,6 +29,10 @@ playServicesAuth = "21.2.0"
 playServicesLocation = "21.3.0"
 roomRuntime = "2.6.1"
 simpleIcons = "1.1.1"
+streamChatAndroidClient = "6.5.3"
+streamChatAndroidCompose = "6.6.0"
+streamChatAndroidOffline = "6.6.0"
+streamChatAndroidState = "6.5.3"
 streamChatAndroidUiComponents = "6.5.3"
 swipeablecard = "0.1.0"
 composeMaterial = "1.4.0"
@@ -38,6 +43,7 @@ firebaseMessagingKtx = "24.1.0"
 
 
 [libraries]
+android = { module = "com.mapbox.maps:android", version.ref = "android" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 androidx-datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "datastorePreferences" }
@@ -81,6 +87,10 @@ lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "
 play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 simple-icons = { module = "br.com.devsrsouza.compose.icons:simple-icons", version.ref = "simpleIcons" }
+stream-chat-android-client = { module = "io.getstream:stream-chat-android-client", version.ref = "streamChatAndroidClient" }
+stream-chat-android-compose = { module = "io.getstream:stream-chat-android-compose", version.ref = "streamChatAndroidCompose" }
+stream-chat-android-offline = { module = "io.getstream:stream-chat-android-offline", version.ref = "streamChatAndroidOffline" }
+stream-chat-android-state = { module = "io.getstream:stream-chat-android-state", version.ref = "streamChatAndroidState" }
 stream-chat-android-ui-components = { module = "io.getstream:stream-chat-android-ui-components", version.ref = "streamChatAndroidUiComponents" }
 swipeablecard = { module = "com.alexstyl.swipeablecard:swipeablecard", version.ref = "swipeablecard" }
 firebase-common-ktx = { group = "com.google.firebase", name = "firebase-common-ktx", version.ref = "firebaseCommonKtx" }

@@ -44,8 +44,19 @@ class AuthViewModel @Inject constructor(
                 if(it.isSuccessful) {
                     val user = auth.currentUser
                     _authState.value = _authState.value.copy(isSuccess = true).copy(isLoggedIn = true)
-                    sharedPreferences.saveToken(idToken)
-
+                    user?.getIdToken(true)?.addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            val accessToken = task.result?.token
+                            if (accessToken != null) {
+                                sharedPreferences.saveToken(accessToken)
+                                Log.d("ACCESS_TOKEN DMTRI", accessToken.toString())
+                            }else{
+                                throw Exception("Failed to get access token")
+                            }
+                        } else {
+                            Log.d("ACCESS_TOKEN", "Failed to get access token")
+                        }
+                    }
                 } else {
                     Log.d("GOOGLE", "firebaseAuthWithGoogle: ${it.exception}")
                 }
