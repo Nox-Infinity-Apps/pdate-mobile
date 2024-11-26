@@ -49,7 +49,7 @@ class AuthViewModel @Inject constructor(
                             val accessToken = task.result?.token
                             if (accessToken != null) {
                                 sharedPreferences.saveToken(accessToken)
-                                Log.d("ACCESS_TOKEN DMTRI", accessToken.toString())
+                                Log.d("ACCESS_TOKEN", accessToken.toString())
                             }
                         }
                     }?.addOnFailureListener {

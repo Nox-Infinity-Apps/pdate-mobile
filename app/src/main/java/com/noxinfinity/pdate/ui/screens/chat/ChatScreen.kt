@@ -2,11 +2,9 @@ package com.noxinfinity.pdate.ui.screens.chat
 
 import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.noxinfinity.pdate.ui.screens.chat.components.ChatList
@@ -14,7 +12,7 @@ import com.noxinfinity.pdate.ui.screens.chat.components.ChatStorySection
 import com.noxinfinity.pdate.ui.screens.chat.components.ChatTabBar
 import com.noxinfinity.pdate.ui.screens.theme.DatingApplicationTheme
 import io.getstream.chat.android.client.ChatClient
-import io.getstream.chat.android.compose.ui.channels.header.ChannelListHeader
+//import io.getstream.chat.android.compose.ui.channels.header.ChannelListHeader
 import io.getstream.chat.android.models.User
 
 
@@ -47,12 +45,12 @@ fun ChatScreen(modifier: Modifier = Modifier) {
             .fillMaxSize()
     ) {
         item{
-            ChannelListHeader(
-                modifier = Modifier.fillMaxWidth(),
-                currentUser = user,
-                title = "Chó trí",
-                connectionState = connectionState.collectAsState().value
-            )
+//            ChannelListHeader(
+//                modifier = Modifier.fillMaxWidth(),
+//                currentUser = user,
+//                title = "Chó trí",
+//                connectionState = connectionState.collectAsState().value
+//            )
         }
         item {
             ChatStorySection()

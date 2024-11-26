@@ -10,4 +10,6 @@ object Graph {
     const val PROFILE = "profile_graph"
     const val NEARBY = "nearby_graph"
     const val ONBOARDING = "onboarding_graph"
+    const val EMPTY = "empty_graph"
+
 }

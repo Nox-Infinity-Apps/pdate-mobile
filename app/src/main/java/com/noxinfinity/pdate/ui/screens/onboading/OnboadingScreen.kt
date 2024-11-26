@@ -28,10 +28,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -127,7 +125,6 @@ fun OnboardingScreen(
             )
             Spacer(modifier = Modifier.height(32.dp))
             GradientButton("Bắt đầu", modifier = Modifier.padding(top = 16.dp), colors = listOf(Color(0xfffeadd4), Color(0xfffea6a4)), labelFontSize = 18.sp, textModifier = Modifier.width(200.dp)) {
-                Log.d("LOGG", "Ua dm")
                 onLogin()
             }
             Spacer(modifier = Modifier.height(16.dp))

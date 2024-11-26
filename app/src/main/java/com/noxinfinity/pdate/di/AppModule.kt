@@ -15,8 +15,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import io.getstream.chat.android.client.ChatClient
-import javax.annotation.Signed
 import javax.inject.Singleton
 
 @Module
@@ -57,9 +55,4 @@ class AppModule {
             .build()
     }
 
-//    @Provides
-//    @Singleton
-//    fun provideChatClient() : ChatClient {
-//
-//    }
 }

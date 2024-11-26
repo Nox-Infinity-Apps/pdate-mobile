@@ -13,7 +13,6 @@ import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -21,23 +20,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.noxinfinity.pdate.R
 import com.noxinfinity.pdate.navigation.Graph
+import com.noxinfinity.pdate.ui.common.components.NetworkImage
 import com.noxinfinity.pdate.ui.view_models.auth.AuthViewModel
 import com.noxinfinity.pdate.utils.widthPadding
 
-/**
- * Ý là mình không DI navcontroller được à đcm
- */
+
 @Composable
 fun HomeHeader(
     rootNavController: NavController,
+    avatar: String,
+    name: String,
     navController: NavController,
     modifier: Modifier = Modifier
 ) {
@@ -57,9 +55,8 @@ fun HomeHeader(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier.fillMaxWidth().padding(12.dp)
     ){
-        Image(
-            painter = painterResource(id = R.drawable.default_avatar),
-            contentDescription = null,
+        NetworkImage(
+            url = avatar,
             contentScale = ContentScale.Crop,
             modifier = Modifier.size(40.dp).clip(CircleShape)
         )
@@ -76,7 +73,7 @@ fun HomeHeader(
                 color = Color.Gray
             )
             Text(
-                text = "John Doe",
+                text = name,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp
             )

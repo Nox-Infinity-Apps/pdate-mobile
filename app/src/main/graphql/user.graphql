@@ -1,0 +1,11 @@
+mutation GetUserInfo($token: String!) {
+    loginByGoogle(token: $token) {
+        isNew
+        user {
+            avatar
+            email
+            fcm_id
+            fullName
+        }
+    }
+}

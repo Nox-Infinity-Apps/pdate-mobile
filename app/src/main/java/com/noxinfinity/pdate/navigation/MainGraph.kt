@@ -1,7 +1,10 @@
 package com.noxinfinity.pdate.navigation
 
+//import com.mapbox.geojson.Point
+//import com.noxinfinity.pdate.ui.common.components.MapBoxMap
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.Point
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -13,20 +16,21 @@ import androidx.core.app.ActivityCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.mapbox.geojson.Point
 import com.noxinfinity.pdate.MainActivity
-import com.noxinfinity.pdate.ui.common.components.MapBoxMap
-import com.noxinfinity.pdate.ui.screens.chat.ChatScreen
 import com.noxinfinity.pdate.ui.screens.common.PlaceHolder
 import com.noxinfinity.pdate.ui.screens.home.HomeScreen
 import com.noxinfinity.pdate.ui.screens.profile.ProfileScreen
-import io.getstream.chat.android.compose.ui.theme.ChatTheme
+import com.noxinfinity.pdate.ui.view_models.main.MainViewModel
+
+//import io.getstream.chat.android.compose.ui.theme.ChatTheme
 
 
 @Composable
 fun MainGraph(
     rootNavController: NavHostController,
-    navController: NavHostController, modifier: Modifier = Modifier) {
+    mainViewModel: MainViewModel,
+    navController: NavHostController, modifier: Modifier = Modifier,
+) {
     val context = LocalContext.current
 
     val fusedLocationClient = remember {
@@ -53,10 +57,9 @@ fun MainGraph(
             1
         )
     }
-    fusedLocationClient.lastLocation.addOnSuccessListener {
-        currentLocationPoint = Point.fromLngLat(it.longitude, it.latitude)
-    }
-
+//    fusedLocationClient.lastLocation.addOnSuccessListener {
+//        currentLocationPoint = Point.fromLngLat(it.longitude, it.latitude)
+//    }
 
 
     NavHost(
@@ -69,18 +72,15 @@ fun MainGraph(
             HomeScreen(
                 rootNavController = rootNavController,
                 navController = navController,
+                mainViewModel = mainViewModel,
             )
         }
         composable(Graph.NEARBY) {
-            MapBoxMap(
-                modifier = Modifier,
-                point = currentLocationPoint
-            )
+            PlaceHolder()
         }
         composable(Graph.CHAT) {
-            ChatTheme {
-                ChatScreen()
-            }
+
+            PlaceHolder()
         }
         composable(Graph.LOVE) {
             PlaceHolder()
