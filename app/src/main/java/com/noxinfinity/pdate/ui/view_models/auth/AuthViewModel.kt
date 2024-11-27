@@ -27,6 +27,7 @@ class AuthViewModel @Inject constructor(
     lateinit var googleSignInClient: GoogleSignInClient
 
     fun checkLoginState() {
+        _authState.value = _authState.value.copy(isLoading = true)
         val token = sharedPreferences.getToken()
         Log.d("ACCESS_TOKEN", token.toString())
         if(token != null) {
@@ -34,6 +35,7 @@ class AuthViewModel @Inject constructor(
                 _authState.value = _authState.value.copy(isLoggedIn = true)
             }
         }
+        _authState.value = _authState.value.copy(isLoading = false)
     }
 
     fun firebaseAuthWithGoogle(idToken: String) {
@@ -73,4 +75,5 @@ class AuthViewModel @Inject constructor(
             onSuccess()
         }
     }
+
 }

@@ -1,10 +1,19 @@
 package com.noxinfinity.pdate.data.repository.home
 
+import com.apollographql.apollo.ApolloClient
+import com.noxinfinity.pdate.BlockUserMutation
+import com.noxinfinity.pdate.LikeUserMutation
 import com.noxinfinity.pdate.R
+import com.noxinfinity.pdate.SuggestedUsersQuery
+import com.noxinfinity.pdate.UnlikeUserMutation
 import com.noxinfinity.pdate.data.models.home.ProfileData
+import com.noxinfinity.pdate.utils.helper.ApolloHelper
 import kotlinx.coroutines.delay
+import javax.inject.Inject
 
-class HomeRepository {
+class HomeRepository @Inject constructor(
+    private val client: ApolloClient,
+) {
     suspend fun loadMoreProfile() : List<ProfileData> {
         delay(3000)
 
@@ -70,5 +79,75 @@ class HomeRepository {
                 imageRes = R.drawable.w10
             )
         )
+    }
+
+    suspend fun getSuggestUser(
+        currentLat: Double,
+        currentLng: Double,
+        offset: Int = 0
+    ) : Result<List<SuggestedUsersQuery.SuggestedUser?>>{
+        return try {
+            val result = client.query(SuggestedUsersQuery(
+                currentLat = currentLat,
+                currentLng = currentLng,
+                offset = ApolloHelper.getOptionalParam(offset)
+            )).execute()
+
+            val suggestedUsers = result.data?.suggestedUsers
+
+            return if (suggestedUsers != null) {
+                Result.success(suggestedUsers)
+            } else {
+                Result.failure(Exception("No data"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+
+    }
+
+    suspend fun likeUser(id: String) : Result<LikeUserMutation.Data> {
+        return try {
+            val response = client.mutation(LikeUserMutation(targetUserId = id)).execute()
+
+            val data = response.data
+            return if(data != null) {
+                Result.success(data)
+            } else {
+                Result.failure(Exception("No data"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun unLikeUser(id: String) : Result<UnlikeUserMutation.Data> {
+        return try {
+            val response = client.mutation(UnlikeUserMutation(targetUserId = id)).execute()
+
+            val data = response.data
+            return if(data != null) {
+                Result.success(data)
+            } else {
+                Result.failure(Exception("No data"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun blockUser(id: String) : Result<BlockUserMutation.Data> {
+        return try {
+            val response = client.mutation(BlockUserMutation(blockedUserId = id)).execute()
+
+            val data = response.data
+            return if(data != null) {
+                Result.success(data)
+            } else {
+                Result.failure(Exception("No data"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 }

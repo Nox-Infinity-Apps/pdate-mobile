@@ -65,14 +65,18 @@ fun MainScreen(
                     return@addOnCompleteListener
                 }
                 val token = task.result
-                LocationServices.getFusedLocationProviderClient(context).lastLocation.addOnCompleteListener{
-                    val location = it.result
-                    viewModel.updateFcmAndLocation(
-                        fcmToken = token,
-                        lat = location?.latitude.toString(),
-                        lng = location?.longitude.toString(),
-                    )
+
+                if(PermissionHelper.checkLocationPermission(context)) {
+                    LocationServices.getFusedLocationProviderClient(context).lastLocation.addOnCompleteListener{
+                        val location = it.result
+                        viewModel.updateFcmAndLocation(
+                            fcmToken = token,
+                            lat = location?.latitude.toString(),
+                            lng = location?.longitude.toString(),
+                        )
+                    }
                 }
+
             }
 
 

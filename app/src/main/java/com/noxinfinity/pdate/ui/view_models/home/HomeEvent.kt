@@ -1,11 +1,9 @@
 package com.noxinfinity.pdate.ui.view_models.home
 
-import com.noxinfinity.pdate.ui.view_models.base.IViewEvent
-
-
-sealed class HomeEvent() {
-    data object LoadMoreProfile : HomeEvent()
-    data object LikeProfile : HomeEvent()
-    data object DislikeProfile : HomeEvent()
-    data object ThinkProfile : HomeEvent()
+sealed class HomeEvent {
+    data class LoadMore(val offset: Int, val currentLat: Double, val currentLng: Double) : HomeEvent()
+    data class Like(val id: String) : HomeEvent()
+    data class UnLike(val id: String) : HomeEvent()
+    data class Block(val id: String) : HomeEvent()
+    data object Think : HomeEvent()
 }

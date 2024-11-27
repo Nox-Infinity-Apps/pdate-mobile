@@ -315,6 +315,14 @@ enum ErrorType {
   FAILED_PRECONDITION
 }
 
+enum Gender {
+  MALE
+
+  FEMALE
+
+  OTHER
+}
+
 type GetAllConversationResponse {
   hasMore: Boolean!
 
@@ -325,6 +333,14 @@ type GetAllConversationResponse {
   currentPage: Int!
 
   data: [Conversation]
+}
+
+type GetAllPurposeResponse implements ResponseBase {
+  status: StatusEnum!
+
+  message: String!
+
+  data: [PurposeResponse]
 }
 
 type GetStreamTokenFailedResult implements ResponseBase {
@@ -446,6 +462,8 @@ type Mutation {
 
   updateFcmTokenAndLocation(input: UpdateFcmTokenAndLocation!): UserInfoSuccessResponse!
 
+  updateUserPurpose(purposeIds: [Int]!): GetAllPurposeResponse!
+
   uploadScriptWithMultipartPOST(file: Upload!): CloudinaryUploadResponse!
 
   uploadFileScriptWithMultipartPOST(file: Upload!): CloudinaryUploadResponse!
@@ -485,6 +503,12 @@ type PictureData {
   id: String!
 }
 
+type PurposeResponse {
+  id: Int
+
+  name: String
+}
+
 type Query {
   helloWorld(input: HelloWorldInput): String
 
@@ -499,6 +523,8 @@ type Query {
   suggestedUsersWithFilter(currentLat: Float!, currentLng: Float!, offset: Int, categoryId: Int): [UserSuggest]
 
   blockedUsers: [UserData]
+
+  getAllPurpose: GetAllPurposeResponse!
 
   getUserPics: UserPicsQueryResponse!
 
@@ -595,6 +621,8 @@ type UserData {
   hobbies: [Hobbies]
 
   pictures: [Pics]
+
+  purpose: [PurposeResponse]
 }
 
 type UserFromGoogle {
@@ -658,6 +686,8 @@ type UserSuggest {
 
   avatarUrl: String
 
+  gender: Gender!
+
   grade: Grade
 
   major: Major
@@ -669,6 +699,8 @@ type UserSuggest {
   commonHobbies: [Hobbie]
 
   purpose: [String]
+
+  pictures: [String]
 }
 
 scalar _FieldSet

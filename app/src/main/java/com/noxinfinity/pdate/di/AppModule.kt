@@ -8,7 +8,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.noxinfinity.pdate.R
 import com.noxinfinity.pdate.data.data_source.local.SharedPreferencesManager
-import com.noxinfinity.pdate.data.repository.home.HomeRepository
 import com.noxinfinity.pdate.utils.Constants
 import dagger.Module
 import dagger.Provides
@@ -43,9 +42,6 @@ class AppModule {
         return GoogleSignIn.getClient(context, gso)
     }
 
-    @Provides
-    @Singleton
-    fun provideHomeRepository() : HomeRepository = HomeRepository()
 
     @Provides
     @Singleton

@@ -1,0 +1,50 @@
+query SuggestedUsers($currentLat: Float!, $currentLng: Float!, $offset: Int = 0) {
+    suggestedUsers(
+        currentLng: $currentLng
+        offset: $offset
+        currentLat: $currentLat
+    ) {
+        avatarUrl
+        bio
+        commonHobbies {
+            iconUrl
+            id
+            title
+        }
+        distance
+        dob
+        fcmId
+        fullName
+        gender
+        pictures
+        purpose
+        grade {
+            id
+            name
+        }
+        major {
+            iconUrl
+            id
+            name
+        }
+    }
+}
+
+mutation LikeUser($targetUserId: String!) {
+    like(targetUserId: $targetUserId) {
+        message
+    }
+
+}
+
+mutation UnlikeUser($targetUserId: String!) {
+    unlike(targetUserId: $targetUserId) {
+        message
+    }
+}
+
+mutation BlockUser($blockedUserId: String!) {
+    blockUser(blockedUserId: $blockedUserId) {
+        message
+    }
+}
