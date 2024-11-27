@@ -1,7 +1,10 @@
 package com.noxinfinity.pdate.ui.screens.onboading
 
 import ChatHeart
+import android.Manifest
 import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -15,19 +18,26 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.BasicAlertDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -37,26 +47,48 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.noxinfinity.pdate.R
 import com.noxinfinity.pdate.navigation.Graph
+import com.noxinfinity.pdate.ui.MainActivity
 import com.noxinfinity.pdate.ui.common.components.GradientButton
 import com.noxinfinity.pdate.ui.view_models.auth.AuthViewModel
+import com.noxinfinity.pdate.utils.helper.PermissionHelper
 import com.noxinfinity.pdate.utils.theme.samsungSansFonts
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OnboardingScreen(
     modifier: Modifier = Modifier,
     onLogin: () -> Unit = {},
     viewModel: AuthViewModel,
-    rootNavController: NavHostController) {
+    rootNavController: NavHostController,
+) {
     val systemUiController = rememberSystemUiController()
     val useDarkIcons = isSystemInDarkTheme()
     val authViewModel: AuthViewModel = hiltViewModel()
     val authState by authViewModel.authState.collectAsState()
+    val context = LocalContext.current
+    var showDialog by remember {
+        mutableStateOf(false)
+    }
+
+    val locationLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (!isGranted) {
+            showDialog = true
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        if (!PermissionHelper.checkLocationPermission(context)) {
+            locationLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+        }
+    }
 
     LaunchedEffect(authState.isLoggedIn) {
         if (authState.isLoggedIn) {
-            Log.d("STATE","Onboading screen: ${authState.isSuccess}")
+            Log.d("STATE", "Onboarding screen: ${authState.isSuccess}")
             rootNavController.navigate(Graph.MAIN) {
-                Log.d("REDIRECT","Redirect to main screen")
+                Log.d("REDIRECT", "Redirect to main screen")
                 popUpTo(rootNavController.graph.startDestinationId) {
                     inclusive = true
                 }
@@ -103,16 +135,24 @@ fun OnboardingScreen(
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 30.dp)
-                .padding(horizontal = 16.dp).systemBarsPadding() ,
+                .padding(horizontal = 16.dp)
+                .systemBarsPadding(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Icon(ChatHeart, contentDescription = null, tint = Color(0xffffa2a5), modifier = Modifier.size(80.dp))
+            Icon(
+                ChatHeart,
+                contentDescription = null,
+                tint = Color(0xffffa2a5),
+                modifier = Modifier.size(80.dp)
+            )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = "Chào mừng đến với P-Date",
                 color = Color.White,
                 style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.align(Alignment.CenterHorizontally).padding(bottom = 16.dp),
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(bottom = 16.dp),
                 textAlign = TextAlign.Center
             )
             Text(
@@ -124,7 +164,13 @@ fun OnboardingScreen(
                 fontFamily = samsungSansFonts
             )
             Spacer(modifier = Modifier.height(32.dp))
-            GradientButton("Bắt đầu", modifier = Modifier.padding(top = 16.dp), colors = listOf(Color(0xfffeadd4), Color(0xfffea6a4)), labelFontSize = 18.sp, textModifier = Modifier.width(200.dp)) {
+            GradientButton(
+                "Bắt đầu",
+                modifier = Modifier.padding(top = 16.dp),
+                colors = listOf(Color(0xfffeadd4), Color(0xfffea6a4)),
+                labelFontSize = 18.sp,
+                textModifier = Modifier.width(200.dp)
+            ) {
                 onLogin()
             }
             Spacer(modifier = Modifier.height(16.dp))
@@ -135,6 +181,28 @@ fun OnboardingScreen(
                 textAlign = TextAlign.Center,
                 fontSize = 12.sp
             )
+        }
+    }
+
+    if (showDialog) {
+        BasicAlertDialog(
+            onDismissRequest = {
+                (context as MainActivity).finish()
+            },
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Surface(
+                shape = MaterialTheme.shapes.medium,
+                color = MaterialTheme.colorScheme.surface,
+                tonalElevation = 6.dp,
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text(
+                    text = "Bạn phải cho phép truy cập vị trí để tiếp tục truy cập ứng dụng",
+                    color = Color.Black,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
         }
     }
 }

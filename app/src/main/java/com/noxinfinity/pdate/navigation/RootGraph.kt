@@ -21,6 +21,8 @@ fun RootGraph(
     val isLoggedIn by viewModel.authState.collectAsState()
 
     LaunchedEffect(Unit) {
+        viewModel.checkLoginState()
+
         snapshotFlow { isLoggedIn }
             .collect { authState ->
                 if (authState.isLoggedIn) {
@@ -44,7 +46,9 @@ fun RootGraph(
         navController = navController,
         startDestination = Graph.EMPTY,
     ) {
-        composable(Graph.EMPTY) {}
+        composable(Graph.EMPTY) {
+
+        }
 
         composable(Graph.ONBOARDING) {
             OnboardingScreen(

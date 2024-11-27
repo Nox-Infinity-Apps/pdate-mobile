@@ -1,0 +1,7 @@
+mutation UpdateFCMTokenAndLocation($fcmNotificationToken: String, $lat: String, $lng: String) {
+    updateFcmTokenAndLocation(
+        input: {fcmNotificationToken: $fcmNotificationToken, location: {lat: $lat, lng: $lng}}
+    ) {
+        message
+    }
+}

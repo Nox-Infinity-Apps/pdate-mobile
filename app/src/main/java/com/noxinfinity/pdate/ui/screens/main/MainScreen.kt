@@ -1,13 +1,14 @@
 package com.noxinfinity.pdate.ui.screens.main
 
 import android.Manifest
-import android.content.pm.PackageManager
-import android.os.Build
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
@@ -19,18 +20,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.content.ContextCompat
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.google.android.gms.location.LocationServices
 import com.google.firebase.messaging.FirebaseMessaging
-import com.noxinfinity.pdate.MainActivity
 import com.noxinfinity.pdate.navigation.MainGraph
 import com.noxinfinity.pdate.ui.common.components.AppIndicator
 import com.noxinfinity.pdate.ui.screens.main.components.BottomBar
 import com.noxinfinity.pdate.ui.view_models.auth.AuthViewModel
 import com.noxinfinity.pdate.ui.view_models.main.MainState
 import com.noxinfinity.pdate.ui.view_models.main.MainViewModel
+import com.noxinfinity.pdate.utils.helper.PermissionHelper
 
 @Composable
 fun MainScreen(
@@ -43,38 +45,16 @@ fun MainScreen(
 
     val viewModel: MainViewModel = hiltViewModel()
 
-    fun checkLocationPermission(): Boolean {
-        return ContextCompat.checkSelfPermission(
-            context,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-        ) == PackageManager.PERMISSION_GRANTED
-    }
 
-    val locationLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        if (!isGranted) {
-            (context as MainActivity).finish()
-        }
-    }
 
     val notificationLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) {}
 
-    fun checkNotificationPermission(): Boolean {
-        return ContextCompat.checkSelfPermission(
-            context,
-            Manifest.permission.POST_NOTIFICATIONS
-        ) == PackageManager.PERMISSION_GRANTED
-    }
 
     LaunchedEffect(Unit) {
-        if (!checkLocationPermission()) {
-            locationLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
-        }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !checkNotificationPermission()) {
+        if (!PermissionHelper.checkNotificationPermission(context)) {
             notificationLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
 
@@ -84,10 +64,17 @@ fun MainScreen(
                     Log.w("FCM", "Fetching FCM registration token failed", task.exception)
                     return@addOnCompleteListener
                 }
-
                 val token = task.result
-                Log.d("FCM", "FCM Token: $token")
+                LocationServices.getFusedLocationProviderClient(context).lastLocation.addOnCompleteListener{
+                    val location = it.result
+                    viewModel.updateFcmAndLocation(
+                        fcmToken = token,
+                        lat = location?.latitude.toString(),
+                        lng = location?.longitude.toString(),
+                    )
+                }
             }
+
 
         viewModel.fetchUser()
 
@@ -109,12 +96,18 @@ fun MainScreen(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center,
         ) {
-            Button(
-                onClick = { viewModel.fetchUser() }
-            ) {
+            Column {
                 Text(
-                    text = "Try Again"
+                    text = (uiState as MainState.Error).message
                 )
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(
+                    onClick = { viewModel.fetchUser() }
+                ) {
+                    Text(
+                        text = "Try Again"
+                    )
+                }
             }
         }
 

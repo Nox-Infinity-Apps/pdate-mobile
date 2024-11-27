@@ -1,4 +1,4 @@
-package com.noxinfinity.pdate
+package com.noxinfinity.pdate.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -31,6 +31,7 @@ class MainActivity : ComponentActivity() {
             try {
                 val account = task.getResult(Exception::class.java)
                 account?.idToken?.let {
+                    Log.d("TOKEN", it)
                     authViewModel.firebaseAuthWithGoogle(it)
                 }
             } catch (e: Exception) {

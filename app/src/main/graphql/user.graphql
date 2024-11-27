@@ -1,6 +1,8 @@
 mutation GetUserInfo($token: String!) {
     loginByGoogle(token: $token) {
+        accessToken
         isNew
+        message
         user {
             avatar
             email
@@ -9,3 +11,4 @@ mutation GetUserInfo($token: String!) {
         }
     }
 }
+

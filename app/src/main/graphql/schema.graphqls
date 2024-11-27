@@ -1,3 +1,17 @@
+type BlockUserResponse implements ResponseBase {
+  status: StatusEnum!
+
+  message: String!
+}
+
+type Category {
+  id: Int
+
+  title: String
+
+  iconUrl: String
+}
+
 type CloudinaryUploadResponse implements ResponseBase {
   message: String!
 
@@ -426,11 +440,25 @@ type Major {
 type Mutation {
   updateUserInfo(input: UpdateUserInfo): UserInfoResponse!
 
+  blockUser(blockedUserId: String!): BlockUserResponse!
+
+  unblockUser(blockedUserId: String!): BlockUserResponse!
+
+  updateFcmTokenAndLocation(input: UpdateFcmTokenAndLocation!): UserInfoSuccessResponse!
+
   uploadScriptWithMultipartPOST(file: Upload!): CloudinaryUploadResponse!
 
   uploadFileScriptWithMultipartPOST(file: Upload!): CloudinaryUploadResponse!
 
   uploadAvatar(file: Upload!): CloudinaryUploadResponse!
+
+  deleteAvatar: CloudinaryUploadResponse!
+
+  uploadPicture(file: Upload!): UserPicsMutationResponse!
+
+  updatePictureById(id: String!, file: Upload!): UserPicsMutationResponse!
+
+  deletePictureById(id: String!): UserPicsMutationResponse!
 
   GetStreamToken(UserId: String!): GetStreamTokenResult!
 
@@ -451,6 +479,12 @@ type Pics {
   url: String
 }
 
+type PictureData {
+  url: String!
+
+  id: String!
+}
+
 type Query {
   helloWorld(input: HelloWorldInput): String
 
@@ -460,9 +494,17 @@ type Query {
 
   getUserInfo: UserInfoResponse!
 
-  suggestedUsers(currentLat: Float!, currentLng: Float!, limit: Int, offset: Int): [UserSuggest]
+  suggestedUsers(currentLat: Float!, currentLng: Float!, offset: Int): [UserSuggest]
+
+  suggestedUsersWithFilter(currentLat: Float!, currentLng: Float!, offset: Int, categoryId: Int): [UserSuggest]
+
+  blockedUsers: [UserData]
+
+  getUserPics: UserPicsQueryResponse!
 
   getAllConversation(limit: Int!, page: Int!): GetAllConversationResponse
+
+  getListCategory: [Category]!
 
   _service: _Service!
 }
@@ -493,6 +535,12 @@ type UnLikeUserResponse implements ResponseBase {
   status: StatusEnum!
 
   message: String!
+}
+
+input UpdateFcmTokenAndLocation {
+  fcmNotificationToken: String
+
+  location: LocationUser
 }
 
 input UpdateUserInfo {
@@ -585,6 +633,22 @@ type UserInfoSuccessResponse implements ResponseBase {
   data: UserData
 }
 
+type UserPicsMutationResponse implements ResponseBase {
+  message: String!
+
+  status: StatusEnum!
+
+  data: PictureData
+}
+
+type UserPicsQueryResponse implements ResponseBase {
+  message: String!
+
+  status: StatusEnum!
+
+  data: [PictureData]!
+}
+
 type UserSuggest {
   fcmId: String!
 
@@ -603,6 +667,8 @@ type UserSuggest {
   distance: Int
 
   commonHobbies: [Hobbie]
+
+  purpose: [String]
 }
 
 scalar _FieldSet

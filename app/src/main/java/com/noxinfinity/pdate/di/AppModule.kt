@@ -49,9 +49,12 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideApolloClient() : ApolloClient {
+    fun provideApolloClient(sharedPreferencesManager: SharedPreferencesManager) : ApolloClient {
         return ApolloClient.Builder()
             .serverUrl(Constants.BASE_URL)
+            .addHttpHeader(
+                "Authorization", "Bearer ${sharedPreferencesManager.getAccessToken()}"
+            )
             .build()
     }
 

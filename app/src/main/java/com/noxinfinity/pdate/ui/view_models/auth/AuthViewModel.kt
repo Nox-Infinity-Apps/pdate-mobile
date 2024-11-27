@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import com.noxinfinity.pdate.data.data_source.local.SharedPreferencesManager
+import com.noxinfinity.pdate.utils.helper.JWTHelper
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
@@ -25,15 +26,13 @@ class AuthViewModel @Inject constructor(
     @Inject
     lateinit var googleSignInClient: GoogleSignInClient
 
-    init {
-        checkLoginState()
-    }
-
-    private fun checkLoginState() {
+    fun checkLoginState() {
         val token = sharedPreferences.getToken()
+        Log.d("ACCESS_TOKEN", token.toString())
         if(token != null) {
-            Log.d("TOKEN_LOGGED", token)
-            _authState.value = _authState.value.copy(isLoggedIn = true)
+            if(!JWTHelper.isJwtExpired(token)) {
+                _authState.value = _authState.value.copy(isLoggedIn = true)
+            }
         }
     }
 

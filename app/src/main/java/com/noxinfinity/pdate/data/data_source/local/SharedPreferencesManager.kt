@@ -7,6 +7,7 @@ class SharedPreferencesManager(context: Context) {
     companion object {
         private const val PREFS_NAME = "user_prefs"
         private const val KEY_USER_TOKEN = "user_token"
+        private const val KEY_ACCESS_TOKEN = "access_token"
     }
 
     private val sharedPreferences: SharedPreferences =
@@ -22,5 +23,13 @@ class SharedPreferencesManager(context: Context) {
 
     fun clearToken() {
         sharedPreferences.edit().remove(KEY_USER_TOKEN).apply()
+    }
+
+    fun saveAccessToken(token: String) {
+        sharedPreferences.edit().putString(KEY_ACCESS_TOKEN, token).apply()
+    }
+
+    fun getAccessToken(): String? {
+        return sharedPreferences.getString(KEY_ACCESS_TOKEN, null)
     }
 }
