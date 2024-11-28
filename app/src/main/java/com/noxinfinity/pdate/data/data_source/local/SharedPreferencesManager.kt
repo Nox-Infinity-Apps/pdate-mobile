@@ -13,8 +13,7 @@ class SharedPreferencesManager @Inject constructor(
         private const val KEY_ACCESS_TOKEN = "access_token"
     }
 
-    private val sharedPreferences: SharedPreferences =
-        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    private val sharedPreferences: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
     fun saveToken(token: String) {
         sharedPreferences.edit().putString(KEY_USER_TOKEN, token).apply()

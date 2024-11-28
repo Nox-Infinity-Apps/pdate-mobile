@@ -4,12 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * Created by merttoptas on 12.03.2022
  */
 
-abstract class BaseViewModel<State : IViewState, Event : IViewEvent> : ViewModel() {
+abstract class BaseViewModel<State : IViewState, Event : IViewEvent>  : ViewModel() {
 
     private val initialState: State by lazy { createInitialState() }
     abstract fun createInitialState(): State
