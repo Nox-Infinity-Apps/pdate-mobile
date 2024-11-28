@@ -59,9 +59,6 @@ fun MainGraph(
             1
         )
     }
-//    fusedLocationClient.lastLocation.addOnSuccessListener {
-//        currentLocationPoint = Point.fromLngLat(it.longitude, it.latitude)
-//    }
 
 
     NavHost(

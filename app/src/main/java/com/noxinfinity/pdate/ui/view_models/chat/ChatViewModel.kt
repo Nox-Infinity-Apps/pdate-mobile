@@ -72,6 +72,7 @@ class ChatViewModel @Inject constructor(
 
 
         payload?.let {
+            Log.d("CHAT_SCREEN","${it.getString("id")} connected to chat")
             ChatRepository.getClient(
                 streamToken,
                 it.getString("id"),
