@@ -14,4 +14,4 @@ data class ChatState(
     val chatClient: ChatClient? = null,
     val isConnected: Boolean = false,
     val user: User? = null
-) : IViewState
+)
