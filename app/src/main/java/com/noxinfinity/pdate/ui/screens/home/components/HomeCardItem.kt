@@ -25,13 +25,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -63,22 +61,23 @@ fun HomeCardItem(
         mutableIntStateOf(0)
     }
 
-    var imageList: List<String> = listOf(
-        profileData.avatarUrl ?: ""
-    )
+    val imageList: List<String?> = if(profileData.pictures.isNullOrEmpty()) {
+        listOf(
+            profileData.avatarUrl ?: ""
+        )
+    } else {
+        profileData.pictures
+    }
 
     LaunchedEffect(profileData) {
         currentIndex.intValue = 0
-        if (!profileData.pictures.isNullOrEmpty()) {
-            imageList = profileData.pictures as List<String>
-        }
     }
 
     Box(
         modifier = modifier.fillMaxSize().background(Color.White)
     ) {
         NetworkImage(
-            url = imageList[currentIndex.intValue],
+            url = imageList[currentIndex.intValue] ?: "",
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxSize()
@@ -86,7 +85,6 @@ fun HomeCardItem(
                 .pointerInput(profileData) {
                     detectTapGestures {
                         val boxWidth = size.width
-                        Log.d("HomeCardItem", "profileData: $profileData")
                         if (it.x < boxWidth / 2) {
                             if (currentIndex.intValue > 0) {
                                 currentIndex.intValue -= 1

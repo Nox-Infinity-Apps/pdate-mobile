@@ -137,15 +137,16 @@ fun HomeCardList(
                                 when (it) {
                                     SwipeDirection.Left -> {
                                         onTriggerEvent(HomeEvent.UnLike(id = item.fcmId))
+                                        onTriggerEvent(HomeEvent.PopUp)
                                     }
 
                                     SwipeDirection.Right -> {
                                         onTriggerEvent(HomeEvent.Like(id = item.fcmId))
-
+                                        onTriggerEvent(HomeEvent.PopUp)
                                     }
 
                                     SwipeDirection.Up -> {
-                                        onTriggerEvent(HomeEvent.Think)
+                                        onTriggerEvent(HomeEvent.PopUp)
                                     }
 
                                     SwipeDirection.Down -> {}
@@ -338,8 +339,11 @@ fun HomeCardList(
                         Button(
                             onClick = {
                                 coroutineScope.launch {
+                                    launch {
+                                        onTriggerEvent(HomeEvent.Block(item.fcmId))
+                                    }.join()
                                     sheetState.hide()
-                                    onTriggerEvent(HomeEvent.Block(item.fcmId))
+                                    onTriggerEvent(HomeEvent.PopUp)
                                 }
                             },
                             modifier = Modifier.fillMaxWidth().padding(

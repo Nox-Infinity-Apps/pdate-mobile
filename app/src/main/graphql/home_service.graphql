@@ -32,6 +32,8 @@ query SuggestedUsers($currentLat: Float!, $currentLng: Float!, $offset: Int = 0)
 
 mutation LikeUser($targetUserId: String!) {
     like(targetUserId: $targetUserId) {
+        isMatched
+        conversationId
         message
     }
 

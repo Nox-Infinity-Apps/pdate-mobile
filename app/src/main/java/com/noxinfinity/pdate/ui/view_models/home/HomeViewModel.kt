@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.noxinfinity.pdate.data.repository.home.HomeRepository
+import com.noxinfinity.pdate.utils.helper.LocationHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -32,12 +33,20 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+
     private fun popUpProfile() {
         _state.value = _state.value.copy(
             profileList = _state.value.profileList.drop(1),
         )
-        if (_state.value.profileList.size < 4) {
+        if (_state.value.profileList.size < 4 && !_state.value.isFetching) {
+            _state.value = _state.value.copy(
+                isFetching = true,
+            )
             loadMoreProfile()
+            _state.value = _state.value.copy(
+                isFetching = false,
+            )
+
         }
     }
 
@@ -70,7 +79,25 @@ class HomeViewModel @Inject constructor(
             _state.value = _state.value.copy(
                 isLoading = true,
             )
-            repo.likeUser(id)
+            val response = repo.likeUser(id)
+
+            response.fold(
+                onSuccess = {
+                    if(it.like?.isMatched != 0) {
+                        _state.value = _state.value.copy(
+                            isDialogShow = true,
+                            dialogData = DialogData(
+                                name = state.value.profileList.first()?.fullName ?: "",
+                                conversationId = (it.like?.conversationId ?: "") as String
+                            )
+                        )
+                    }
+                },
+                onFailure = {
+                    Log.d("HomeViewModel Error", "likeProfile: $it")
+                }
+            )
+
             _state.value = _state.value.copy(
                 isLoading = false,
             )
@@ -82,9 +109,10 @@ class HomeViewModel @Inject constructor(
             _state.value = _state.value.copy(
                 isLoading = true,
             )
+
             val response = repo.getSuggestUser(
-                currentLat = 10.762622,
-                currentLng = 106.660172,
+                currentLat = LocationHelper.lat,
+                currentLng = LocationHelper.lng,
                 offset = _state.value.offset
             )
 
@@ -92,7 +120,7 @@ class HomeViewModel @Inject constructor(
                 onSuccess = {
                     _state.value = _state.value.copy(
                         profileList = _state.value.profileList + it,
-                        offset = _state.value.offset + 10,
+                        offset = _state.value.offset + 1,
                     )
                 },
                 onFailure = {
@@ -107,6 +135,12 @@ class HomeViewModel @Inject constructor(
                 isLoading = false,
             )
         }
+    }
+
+    fun onDismissDialog() {
+        _state.value = _state.value.copy(
+            isDialogShow = false,
+        )
     }
 }
 

@@ -69,10 +69,8 @@ fun HomeSwipeBox(
                                 cardStackState.animateTo(
                                     SwipeDirection.Left
                                 )
-
+                                onTriggerEvent(HomeEvent.PopUp)
                             }
-
-
                         }
                 },
                 modifier = Modifier.weight(1f),
@@ -87,7 +85,6 @@ fun HomeSwipeBox(
                                 cardStackState.animateTo(
                                     SwipeDirection.Up
                                 )
-                                onTriggerEvent(HomeEvent.PopUp)
                                 onTriggerEvent(HomeEvent.PopUp)
                             }
                         }

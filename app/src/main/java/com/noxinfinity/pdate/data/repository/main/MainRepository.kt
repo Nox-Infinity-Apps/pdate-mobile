@@ -25,7 +25,6 @@ class MainRepository @Inject constructor(
 
     suspend fun updateFcmAndLocation(fcmToken: String?, lat: String?, lng: String?) : Result<String> {
         return try {
-            val token = sharedPreferencesManager.getAccessToken()
             val response = client.mutation(
                 UpdateFCMTokenAndLocationMutation(
                     fcmNotificationToken = ApolloHelper.getOptionalParam(fcmToken),
