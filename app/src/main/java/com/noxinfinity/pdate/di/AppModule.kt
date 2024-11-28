@@ -48,9 +48,6 @@ class AppModule {
         return GoogleSignIn.getClient(context, gso)
     }
 
-    @Provides
-    @Singleton
-    fun provideHomeRepository() : HomeRepository = HomeRepository()
 
     @Provides
     @Singleton

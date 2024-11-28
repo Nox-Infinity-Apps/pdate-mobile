@@ -66,23 +66,7 @@ fun OnboardingScreen(
     val authViewModel: AuthViewModel = hiltViewModel()
     val authState by authViewModel.authState.collectAsState()
     val context = LocalContext.current
-    var showDialog by remember {
-        mutableStateOf(false)
-    }
 
-    val locationLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        if (!isGranted) {
-            showDialog = true
-        }
-    }
-
-    LaunchedEffect(Unit) {
-        if (!PermissionHelper.checkLocationPermission(context)) {
-            locationLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
-        }
-    }
 
     LaunchedEffect(authState.isLoggedIn) {
         if (authState.isLoggedIn) {
@@ -184,25 +168,5 @@ fun OnboardingScreen(
         }
     }
 
-    if (showDialog) {
-        BasicAlertDialog(
-            onDismissRequest = {
-                (context as MainActivity).finish()
-            },
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Surface(
-                shape = MaterialTheme.shapes.medium,
-                color = MaterialTheme.colorScheme.surface,
-                tonalElevation = 6.dp,
-                modifier = Modifier.padding(16.dp)
-            ) {
-                Text(
-                    text = "Bạn phải cho phép truy cập vị trí để tiếp tục truy cập ứng dụng",
-                    color = Color.Black,
-                    modifier = Modifier.padding(16.dp)
-                )
-            }
-        }
-    }
+
 }

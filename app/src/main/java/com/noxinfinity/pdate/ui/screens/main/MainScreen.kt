@@ -33,6 +33,7 @@ import com.noxinfinity.pdate.ui.screens.main.components.BottomBar
 import com.noxinfinity.pdate.ui.view_models.auth.AuthViewModel
 import com.noxinfinity.pdate.ui.view_models.main.MainState
 import com.noxinfinity.pdate.ui.view_models.main.MainViewModel
+import com.noxinfinity.pdate.utils.helper.LocationHelper
 import com.noxinfinity.pdate.utils.helper.PermissionHelper
 
 @Composable
@@ -66,14 +67,21 @@ fun MainScreen(
                     return@addOnCompleteListener
                 }
                 val token = task.result
-                LocationServices.getFusedLocationProviderClient(context).lastLocation.addOnCompleteListener{
-                    val location = it.result
-                    viewModel.updateFcmAndLocation(
-                        fcmToken = token,
-                        lat = location?.latitude.toString(),
-                        lng = location?.longitude.toString(),
-                    )
+
+                if(PermissionHelper.checkLocationPermission(context)) {
+                    LocationServices.getFusedLocationProviderClient(context).lastLocation.addOnCompleteListener{
+                        val location = it.result
+                        LocationHelper.lat = location?.latitude ?: 0.0
+                        LocationHelper.lng = location?.longitude ?: 0.0
+
+                        viewModel.updateFcmAndLocation(
+                            fcmToken = token,
+                            lat = location?.latitude.toString(),
+                            lng = location?.longitude.toString(),
+                        )
+                    }
                 }
+
             }
 
 

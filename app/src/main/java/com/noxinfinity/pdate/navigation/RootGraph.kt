@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.noxinfinity.pdate.ui.screens.chat.ConversationScreen
+import com.noxinfinity.pdate.ui.screens.empty.EmptyScreen
 import com.noxinfinity.pdate.ui.screens.main.MainScreen
 import com.noxinfinity.pdate.ui.screens.onboading.OnboardingScreen
 import com.noxinfinity.pdate.ui.view_models.auth.AuthViewModel
@@ -24,20 +25,20 @@ fun RootGraph(
     val isLoggedIn by viewModel.authState.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.checkLoginState()
-
         snapshotFlow { isLoggedIn }
             .collect { authState ->
-                if (authState.isLoggedIn) {
-                    navController.navigate(Graph.MAIN) {
-                        popUpTo(navController.graph.startDestinationId) {
-                            inclusive = true
+                if(!authState.isLoading) {
+                    if (authState.isLoggedIn) {
+                        navController.navigate(Graph.MAIN) {
+                            popUpTo(navController.graph.startDestinationId) {
+                                inclusive = true
+                            }
                         }
-                    }
-                } else {
-                    navController.navigate(Graph.ONBOARDING) {
-                        popUpTo(navController.graph.startDestinationId) {
-                            inclusive = true
+                    } else {
+                        navController.navigate(Graph.ONBOARDING) {
+                            popUpTo(navController.graph.startDestinationId) {
+                                inclusive = true
+                            }
                         }
                     }
                 }
@@ -50,7 +51,9 @@ fun RootGraph(
         startDestination = Graph.EMPTY,
     ) {
         composable(Graph.EMPTY) {
-
+            EmptyScreen(
+                viewModel = viewModel,
+            )
         }
 
         composable(Graph.ONBOARDING) {

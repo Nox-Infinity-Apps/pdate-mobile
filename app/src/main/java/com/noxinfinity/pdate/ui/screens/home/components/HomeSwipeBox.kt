@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.noxinfinity.customtinderswiper.swipe_state.SwipeDirection
@@ -39,6 +40,7 @@ fun HomeSwipeBox(
             swipeableCardState = cardStackState,
             onTriggerEvent = onTriggerEvent
         )
+
         Row(
             modifier = Modifier
                 .align(
@@ -52,27 +54,41 @@ fun HomeSwipeBox(
         ) {
             HomeCardItemButton(
                 icon = R.drawable.ic_close,
+                chosenColor = Color.Red,
                 onClick = {
-                    scope.launch {
-                        cardStackState.animateTo(
-                            SwipeDirection.Left
-                        )
-                        onTriggerEvent(HomeEvent.DislikeProfile)
-                    }
+                        if (state.profileList.isNotEmpty() && !state.isLoading) {
+                            scope.launch {
+                                launch {
+                                    onTriggerEvent(
+                                        HomeEvent.UnLike(
+                                            id = state.profileList.first()!!.fcmId
+                                        )
+                                    )
+                                }.join()
 
+                                cardStackState.animateTo(
+                                    SwipeDirection.Left
+                                )
+                                onTriggerEvent(HomeEvent.PopUp)
+                            }
+                        }
                 },
                 modifier = Modifier.weight(1f),
                 isChosen = cardStackState.swipedDirection == SwipeDirection.Left
             )
             HomeCardItemButton(
                 icon = R.drawable.ic_loading,
+                chosenColor = Color(0xffB6D0E2),
                 onClick = {
-                    scope.launch {
-                        cardStackState.animateTo(
-                            SwipeDirection.Up
-                        )
-                        onTriggerEvent(HomeEvent.ThinkProfile)
-                    }
+                        if (state.profileList.isNotEmpty() && !state.isLoading) {
+                            scope.launch {
+                                cardStackState.animateTo(
+                                    SwipeDirection.Up
+                                )
+                                onTriggerEvent(HomeEvent.PopUp)
+                            }
+                        }
+
 
                 },
                 modifier = Modifier.weight(1f),
@@ -80,13 +96,24 @@ fun HomeSwipeBox(
             )
             HomeCardItemButton(
                 icon = R.drawable.ic_love,
+                chosenColor = Color(0xffFFC0CB),
                 onClick = {
-                    scope.launch {
-                        cardStackState.animateTo(
-                            SwipeDirection.Right
-                        )
-                        onTriggerEvent(HomeEvent.LikeProfile)
+                    if (state.profileList.isNotEmpty() && !state.isLoading) {
+                        scope.launch {
+                            val callApi = launch {
+                                onTriggerEvent(HomeEvent.Like(id = state.profileList.first()!!.fcmId))
+                            }
+
+                            callApi.join()
+
+                            cardStackState.animateTo(
+                                SwipeDirection.Right
+                            )
+                            onTriggerEvent(HomeEvent.PopUp)
+
+                        }
                     }
+
                 },
                 modifier = Modifier.weight(1f),
                 isChosen = cardStackState.swipedDirection == SwipeDirection.Right

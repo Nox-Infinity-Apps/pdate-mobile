@@ -1,6 +1,7 @@
 package com.noxinfinity.pdate.ui.screens.home.components
 
 
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -10,6 +11,7 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,64 +23,130 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.noxinfinity.pdate.R
-import com.noxinfinity.pdate.data.models.home.ProfileData
+import com.noxinfinity.pdate.SuggestedUsersQuery
+import com.noxinfinity.pdate.ui.common.components.NetworkImage
 import com.noxinfinity.pdate.ui.screens.common.AppButton
 import com.noxinfinity.pdate.ui.screens.common.AppChip
 
 @Composable
 fun HomeCardItem(
-    profileData: ProfileData,
-    modifier: Modifier = Modifier
+    profileData: SuggestedUsersQuery.SuggestedUser,
+    openSheet: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
+    val currentIndex = rememberSaveable(profileData.fcmId) {
+        mutableIntStateOf(0)
+    }
+
+    val imageList: List<String?> = if(profileData.pictures.isNullOrEmpty()) {
+        listOf(
+            profileData.avatarUrl ?: ""
+        )
+    } else {
+        profileData.pictures
+    }
+
+    LaunchedEffect(profileData) {
+        currentIndex.intValue = 0
+    }
+
     Box(
-        modifier = modifier
-            .fillMaxSize()
+        modifier = modifier.fillMaxSize().background(Color.White)
     ) {
-        Image(
-            painter = painterResource(profileData.imageRes),
+        NetworkImage(
+            url = imageList[currentIndex.intValue] ?: "",
             contentScale = ContentScale.Crop,
-            contentDescription = null,
             modifier = Modifier
                 .fillMaxSize()
                 .clip(RoundedCornerShape(18.dp))
+                .pointerInput(profileData) {
+                    detectTapGestures {
+                        val boxWidth = size.width
+                        if (it.x < boxWidth / 2) {
+                            if (currentIndex.intValue > 0) {
+                                currentIndex.intValue -= 1
+                            }
+                        } else {
+                            if(currentIndex.intValue < imageList.size - 1) {
+                                currentIndex.intValue += 1
+                            }
+                        }
+                    }
+                }
         )
 
         // Header Section với thông tin từ ProfileData
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    horizontal = 10.dp,
-                    vertical = 6.dp
-                ),
-            horizontalArrangement = Arrangement.End
+        Column(
+            modifier = Modifier.fillMaxWidth()
         ) {
-            AppChip(
-                text = "Here to Date",
-                icon = R.drawable.ic_search_date
-            )
-            Spacer(modifier = Modifier.width(5.dp))
-            AppChip(
-                text = "1km",
-                icon = R.drawable.ic_location
-            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 6.dp, start = 3.dp, end = 3.dp),
+                horizontalArrangement = Arrangement.Start
+            ) {
+                imageList.let {
+                    it.forEachIndexed { index, _ ->
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(horizontal = 5.dp)
+                                .height(3.dp)
+                                .clip(
+                                    RoundedCornerShape(10.dp)
+                                )
+                                .background(
+                                    color = if (index == currentIndex.intValue) Color.White else Color.Black,
+                                )
+                        )
+                    }
+                }
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        horizontal = 10.dp,
+                        vertical = 3.dp
+                    ),
+                horizontalArrangement = Arrangement.End
+            ) {
+                if (profileData.grade != null) {
+                    AppChip(
+                        text = profileData.grade.name ?: "",
+                        icon = R.drawable.student
+                    )
+                }
+                Spacer(modifier = Modifier.width(5.dp))
+                if (profileData.distance != null)
+                    AppChip(
+                        text = formatDistance(profileData.distance),
+                        icon = R.drawable.ic_location
+                    )
+            }
         }
 
         // Description Section
@@ -97,27 +165,63 @@ fun HomeCardItem(
         ) {
             Column(
                 modifier = Modifier
-                    .align(Alignment.BottomStart)
                     .padding(16.dp)
+                    .align(Alignment.BottomStart)
             ) {
-                // Hiển thị tên và tuổi từ ProfileData
-                Text(
-                    text = "${profileData.name}, ${profileData.age}",
-                    color = Color.White,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.height(8.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column {
+                        Text(
+                            text = "${profileData.fullName}",
+                            color = Color.White,
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold
+                        )
 
-                // Hiển thị mô tả từ ProfileData
-                Text(
-                    text = profileData.description,
-                    color = Color.White,
-                    fontSize = 14.sp
-                )
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Text(
+                            text = profileData.bio ?: "",
+                            color = Color.White,
+                            maxLines = 3,
+                            overflow = TextOverflow.Ellipsis,
+                            fontSize = 14.sp
+                        )
+                    }
+
+                    AppButton(
+                        modifier = Modifier
+                            .height(35.dp)
+                            .width(35.dp)
+                            .clip(CircleShape),
+                        icon = {
+                            Image(
+                                painter = painterResource(R.drawable.expand),
+                                modifier = Modifier.padding(6.dp),
+                                contentDescription = null
+                            )
+                        },
+                        onClick = openSheet
+                    )
+                }
+
+
                 Spacer(modifier = Modifier.height(70.dp))
             }
         }
+
+
+    }
+}
+
+fun formatDistance(distanceInMeters: Int): String {
+    return if (distanceInMeters < 1000) {
+        "Gần đây"
+    } else {
+        "%.1fkm".format(distanceInMeters / 1000.0)
     }
 }
 
@@ -127,7 +231,8 @@ fun HomeCardItemButton(
     modifier: Modifier = Modifier,
     @DrawableRes icon: Int,
     onClick: () -> Unit,
-    isChosen: Boolean? = false
+    isChosen: Boolean? = false,
+    chosenColor: Color = Color.Red
 ) {
     AppButton(
         modifier = modifier
@@ -140,8 +245,8 @@ fun HomeCardItemButton(
                 contentDescription = null
             )
         },
-        color = if (isChosen == true) Color.Red else Color.White,
-        borderRadius = 8,
+        color = if (isChosen == true) chosenColor else Color.White,
+        borderRadius = 12,
         onClick = onClick
     )
 }
@@ -254,5 +359,17 @@ fun HomeCardSkeletonWithShimmer(
 @Preview(name = "HomeCardItem")
 @Composable
 private fun PreviewHomeCardItem() {
-
+    AppButton(
+        modifier = Modifier
+            .height(30.dp)
+            .width(30.dp)
+            .clip(CircleShape),
+        icon = {
+            Image(
+                painter = painterResource(R.drawable.expand),
+                modifier = Modifier.padding(3.dp),
+                contentDescription = null
+            )
+        },
+    )
 }
