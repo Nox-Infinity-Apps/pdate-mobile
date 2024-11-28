@@ -134,6 +134,11 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.androidx.material)
+
+    //Stream
+    implementation(libs.stream.chat.android.compose)
+    implementation(libs.stream.chat.android.offline)
+
 }
 
 kapt {

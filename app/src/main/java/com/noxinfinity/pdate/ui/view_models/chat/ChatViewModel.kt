@@ -67,6 +67,8 @@ class ChatViewModel @Inject constructor(
         Log.d("STREAM_TOKEN", streamToken)
         val payload = JWTHelper.decodeJwtPayLoad(accessToken)
         Log.d("PAYLOAD", payload.toString())
+
+
         payload?.let {
             ChatRepository.getClient(
                 streamToken,
@@ -76,7 +78,7 @@ class ChatViewModel @Inject constructor(
                 onConnectionSuccess = {
                     Log.d("ChatViewModel", "Connected to chat")
                     setState {
-                        copy(isConnected = true)
+                        copy(isConnected = true, user = it)
                     }
                 },
                 onConnectionFailure = {

@@ -63,5 +63,9 @@ class AppModule {
             .build()
     }
 
+    @Provides
+    fun provideChatClient(context: Context): ChatClient {
+        return ChatClient.Builder("625kk64h8kah", context).build()
+    }
 
 }

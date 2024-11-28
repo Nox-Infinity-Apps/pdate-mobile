@@ -2,6 +2,7 @@ package com.noxinfinity.pdate.ui.view_models.chat
 
 import com.noxinfinity.pdate.ui.view_models.base.IViewState
 import io.getstream.chat.android.client.ChatClient
+import io.getstream.chat.android.models.User
 
 
 data class ChatState(
@@ -11,5 +12,6 @@ data class ChatState(
     val isError: Boolean = false,
     val authId: String = "",
     val chatClient: ChatClient? = null,
-    val isConnected: Boolean = false
+    val isConnected: Boolean = false,
+    val user: User? = null
 ) : IViewState

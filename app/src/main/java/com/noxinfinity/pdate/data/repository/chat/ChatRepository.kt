@@ -7,9 +7,10 @@ import io.getstream.result.Result
 import javax.inject.Inject
 
 class ChatRepository @Inject constructor(
+    private val chatClient: ChatClient
 ) {
     companion object {
-        fun getClient(accessToken: String, userId: String, fullName: String, avatar: String, onConnectionSuccess: () -> Unit, onConnectionFailure: () -> Unit) {
+        fun getClient(accessToken: String, userId: String, fullName: String, avatar: String, onConnectionSuccess: (userClient: User) -> Unit, onConnectionFailure: () -> Unit) {
             val user = User(
                 id = userId,
                 extraData = mutableMapOf(
@@ -24,7 +25,7 @@ class ChatRepository @Inject constructor(
                         onConnectionFailure()
                     }
                     is Result.Success -> {
-                        onConnectionSuccess()
+                        onConnectionSuccess(result.value.user)
                     }
                 }
             }
