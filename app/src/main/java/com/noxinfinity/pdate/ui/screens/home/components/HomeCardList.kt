@@ -150,6 +150,7 @@ fun HomeCardList(
 
                                     SwipeDirection.Down -> {}
                                 }
+
                                 scope.launch {
                                     swipeableCardState.snapTo(Offset.Zero)
                                 }

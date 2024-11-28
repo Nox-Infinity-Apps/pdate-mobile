@@ -1,5 +1,6 @@
 package com.noxinfinity.pdate.data.repository.main
 
+import android.util.Log
 import com.apollographql.apollo.ApolloClient
 import com.noxinfinity.pdate.GetUserInfoMutation
 import com.noxinfinity.pdate.UpdateFCMTokenAndLocationMutation
@@ -17,6 +18,7 @@ class MainRepository @Inject constructor(
             val response = client.mutation(GetUserInfoMutation(token!!)).execute()
             Result.success(response.data?.loginByGoogle)
         } catch (e : Exception) {
+            Log.d("FETCH_USER REPO", e.message ?: "Unknown error")
             Result.failure(e)
         }
     }
@@ -33,6 +35,7 @@ class MainRepository @Inject constructor(
             ).execute()
             Result.success(response.data?.updateFcmTokenAndLocation!!.message)
         } catch (e: Exception) {
+            Log.d("UPDATE_FCM REPO", e.message ?: "Unknown error")
             Result.failure(e)
         }
     }

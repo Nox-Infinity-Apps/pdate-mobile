@@ -56,21 +56,24 @@ fun HomeSwipeBox(
                 icon = R.drawable.ic_close,
                 chosenColor = Color.Red,
                 onClick = {
-                    scope.launch {
-                        if(state.profileList.isNotEmpty() && !state.isLoading) {
-                            onTriggerEvent(
-                                HomeEvent.UnLike(
-                                    id = state.profileList.first()!!.fcmId
+                        if (state.profileList.isNotEmpty() && !state.isLoading) {
+                            scope.launch {
+                                launch {
+                                    onTriggerEvent(
+                                        HomeEvent.UnLike(
+                                            id = state.profileList.first()!!.fcmId
+                                        )
+                                    )
+                                }.join()
+
+                                cardStackState.animateTo(
+                                    SwipeDirection.Left
                                 )
-                            )
-                            cardStackState.animateTo(
-                                SwipeDirection.Left
-                            )
+
+                            }
+
 
                         }
-
-                    }
-
                 },
                 modifier = Modifier.weight(1f),
                 isChosen = cardStackState.swipedDirection == SwipeDirection.Left
@@ -79,16 +82,16 @@ fun HomeSwipeBox(
                 icon = R.drawable.ic_loading,
                 chosenColor = Color(0xffB6D0E2),
                 onClick = {
-                    scope.launch {
-                        if(state.profileList.isNotEmpty() && !state.isLoading) {
-                            onTriggerEvent(HomeEvent.Think)
-                            cardStackState.animateTo(
-                                SwipeDirection.Up
-                            )
-
+                        if (state.profileList.isNotEmpty() && !state.isLoading) {
+                            scope.launch {
+                                cardStackState.animateTo(
+                                    SwipeDirection.Up
+                                )
+                                onTriggerEvent(HomeEvent.PopUp)
+                                onTriggerEvent(HomeEvent.PopUp)
+                            }
                         }
 
-                    }
 
                 },
                 modifier = Modifier.weight(1f),
@@ -98,14 +101,22 @@ fun HomeSwipeBox(
                 icon = R.drawable.ic_love,
                 chosenColor = Color(0xffFFC0CB),
                 onClick = {
-                    scope.launch {
-                        if(state.profileList.isNotEmpty() && !state.isLoading) {
+                    if (state.profileList.isNotEmpty() && !state.isLoading) {
+                        scope.launch {
+                            val callApi = launch {
+                                onTriggerEvent(HomeEvent.Like(id = state.profileList.first()!!.fcmId))
+                            }
+
+                            callApi.join()
+
                             cardStackState.animateTo(
                                 SwipeDirection.Right
                             )
+                            onTriggerEvent(HomeEvent.PopUp)
+
                         }
                     }
-                    onTriggerEvent(HomeEvent.Like(id = state.profileList.first()!!.fcmId))
+
                 },
                 modifier = Modifier.weight(1f),
                 isChosen = cardStackState.swipedDirection == SwipeDirection.Right

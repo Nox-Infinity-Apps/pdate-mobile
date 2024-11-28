@@ -6,4 +6,5 @@ sealed class HomeEvent {
     data class UnLike(val id: String) : HomeEvent()
     data class Block(val id: String) : HomeEvent()
     data object Think : HomeEvent()
+    data object PopUp : HomeEvent()
 }

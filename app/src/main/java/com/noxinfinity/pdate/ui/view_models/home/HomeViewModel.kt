@@ -28,6 +28,7 @@ class HomeViewModel @Inject constructor(
             is HomeEvent.Think -> popUpProfile()
             is HomeEvent.UnLike -> dislikeProfile(id = event.id)
             is HomeEvent.Block -> blockProfile(id = event.id)
+            else -> popUpProfile()
         }
     }
 
@@ -46,7 +47,6 @@ class HomeViewModel @Inject constructor(
                 isLoading = true,
             )
             repo.blockUser(id = id)
-            popUpProfile()
             _state.value = _state.value.copy(
                 isLoading = false,
             )
@@ -59,7 +59,6 @@ class HomeViewModel @Inject constructor(
                 isLoading = true,
             )
             repo.unLikeUser(id = id)
-            popUpProfile()
             _state.value = _state.value.copy(
                 isLoading = false,
             )
@@ -72,7 +71,6 @@ class HomeViewModel @Inject constructor(
                 isLoading = true,
             )
             repo.likeUser(id)
-            popUpProfile()
             _state.value = _state.value.copy(
                 isLoading = false,
             )

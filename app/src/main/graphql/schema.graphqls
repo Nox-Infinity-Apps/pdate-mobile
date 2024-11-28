@@ -522,6 +522,8 @@ type Query {
 
   suggestedUsersWithFilter(currentLat: Float!, currentLng: Float!, offset: Int, categoryId: Int): [UserSuggest]
 
+  suggestedUsersNearBy(currentLat: Float!, currentLng: Float!, offset: Int): [UserSuggest]
+
   blockedUsers: [UserData]
 
   getAllPurpose: GetAllPurposeResponse!
@@ -697,6 +699,8 @@ type UserSuggest {
   distance: Int
 
   commonHobbies: [Hobbie]
+
+  allHobbies: [Hobbie]
 
   purpose: [String]
 

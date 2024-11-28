@@ -63,15 +63,22 @@ fun HomeCardItem(
         mutableIntStateOf(0)
     }
 
+    var imageList: List<String> = listOf(
+        profileData.avatarUrl ?: ""
+    )
+
     LaunchedEffect(profileData) {
-        Log.d("HomeCardItem", "profileData: $profileData")
+        currentIndex.intValue = 0
+        if (!profileData.pictures.isNullOrEmpty()) {
+            imageList = profileData.pictures as List<String>
+        }
     }
 
     Box(
         modifier = modifier.fillMaxSize().background(Color.White)
     ) {
         NetworkImage(
-            url = profileData.pictures!![currentIndex.intValue]!!,
+            url = imageList[currentIndex.intValue],
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxSize()
@@ -85,7 +92,7 @@ fun HomeCardItem(
                                 currentIndex.intValue -= 1
                             }
                         } else {
-                            if(currentIndex.intValue < profileData.pictures.size - 1) {
+                            if(currentIndex.intValue < imageList.size - 1) {
                                 currentIndex.intValue += 1
                             }
                         }
@@ -103,7 +110,7 @@ fun HomeCardItem(
                     .padding(top = 6.dp, start = 3.dp, end = 3.dp),
                 horizontalArrangement = Arrangement.Start
             ) {
-                profileData.pictures.let {
+                imageList.let {
                     it.forEachIndexed { index, _ ->
                         Box(
                             modifier = Modifier

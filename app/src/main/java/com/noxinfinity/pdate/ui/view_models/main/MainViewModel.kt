@@ -30,14 +30,13 @@ class MainViewModel @Inject constructor(
                 val result = mainRepository.getUserInfo()
                 _uiState.value = result.fold(
                     onSuccess = {
-                        Log.d("FETCH_USER", it.toString())
                         if(it?.user == null) {
                             MainState.Error(
                                 "",
                                 tokenTimeOut = true,
                             )
                         } else {
-                            Log.d("FETCH_USER", it.message)
+                            Log.d("FETCH_USER ACCESS TOKEN", it.accessToken)
                             sharedPreferencesManager.saveAccessToken(it.accessToken)
                             MainState.Success(
                                 isNew = (it).isNew,
@@ -46,7 +45,7 @@ class MainViewModel @Inject constructor(
                         }
                     },
                     onFailure = {
-                        Log.d("FETCH_USER", it.toString())
+                        Log.d("FETCH_USER FAILED", it.toString())
                         MainState.Error(
                             it.message ?: "Error Fetching user"
                         )
