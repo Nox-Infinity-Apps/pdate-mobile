@@ -11,5 +11,5 @@ object Graph {
     const val NEARBY = "nearby_graph"
     const val ONBOARDING = "onboarding_graph"
     const val EMPTY = "empty_graph"
-
+    const val MESSAGE = "conversation/{id}"
 }

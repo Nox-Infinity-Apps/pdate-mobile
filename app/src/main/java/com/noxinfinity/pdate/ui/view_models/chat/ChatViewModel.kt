@@ -1,12 +1,14 @@
 package com.noxinfinity.pdate.ui.view_models.chat
 
 import android.util.Log
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.noxinfinity.pdate.data.data_source.local.SharedPreferencesManager
 import com.noxinfinity.pdate.data.repository.chat.ChatRepository
 import com.noxinfinity.pdate.ui.view_models.base.BaseViewModel
 import com.noxinfinity.pdate.utils.helper.JWTHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -77,8 +79,10 @@ class ChatViewModel @Inject constructor(
                 it.getString("avatar"),
                 onConnectionSuccess = {
                     Log.d("ChatViewModel", "Connected to chat")
-                    setState {
-                        copy(isConnected = true, user = it)
+                    viewModelScope.launch {
+                        setState {
+                            copy(isConnected = true, user = it)
+                        }
                     }
                 },
                 onConnectionFailure = {

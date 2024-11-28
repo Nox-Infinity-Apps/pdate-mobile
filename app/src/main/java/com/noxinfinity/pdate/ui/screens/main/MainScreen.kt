@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.location.LocationServices
@@ -37,10 +38,10 @@ import com.noxinfinity.pdate.utils.helper.PermissionHelper
 @Composable
 fun MainScreen(
     rootNavController: NavHostController,
+    navController: NavHostController,
     authViewModel: AuthViewModel,
 ) {
 
-    val navController = rememberNavController()
     val context = LocalContext.current
 
     val viewModel: MainViewModel = hiltViewModel()

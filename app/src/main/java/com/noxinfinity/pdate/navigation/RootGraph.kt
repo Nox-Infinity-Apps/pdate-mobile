@@ -8,6 +8,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.noxinfinity.pdate.ui.screens.chat.ConversationScreen
 import com.noxinfinity.pdate.ui.screens.main.MainScreen
 import com.noxinfinity.pdate.ui.screens.onboading.OnboardingScreen
 import com.noxinfinity.pdate.ui.view_models.auth.AuthViewModel
@@ -18,6 +19,8 @@ fun RootGraph(
     onLogin: () -> Unit
 ) {
     val navController = rememberNavController()
+    val inMainNavController = rememberNavController()
+
     val isLoggedIn by viewModel.authState.collectAsState()
 
     LaunchedEffect(Unit) {
@@ -62,6 +65,13 @@ fun RootGraph(
             MainScreen(
                 rootNavController = navController,
                 authViewModel = viewModel,
+                navController = inMainNavController
+            )
+        }
+
+        composable(Graph.MESSAGE) {
+            ConversationScreen(it.arguments?.getString("id")!!,
+                navController = navController
             )
         }
     }

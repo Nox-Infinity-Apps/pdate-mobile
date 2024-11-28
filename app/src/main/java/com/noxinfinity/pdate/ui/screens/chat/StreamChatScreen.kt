@@ -5,18 +5,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.noxinfinity.pdate.ui.view_models.chat.ChatViewModel
 import io.getstream.chat.android.client.ChatClient
 import io.getstream.chat.android.compose.ui.channels.ChannelsScreen
 import io.getstream.chat.android.compose.ui.channels.SearchMode
 import io.getstream.chat.android.compose.ui.theme.ChatTheme
-import io.getstream.chat.android.compose.viewmodel.channels.ChannelListViewModel
-import io.getstream.chat.android.compose.viewmodel.channels.ChannelViewModelFactory
-import io.getstream.chat.android.models.querysort.QuerySortByField
 
 
 @Composable
-fun StreamChatScreen() {
+fun StreamChatScreen(
+    navController: NavController,
+    rootNavController: NavController
+) {
     val chatViewModel: ChatViewModel = hiltViewModel()
     val state = chatViewModel.uiState.collectAsState().value
 
@@ -28,6 +30,9 @@ fun StreamChatScreen() {
             ChannelsScreen(
                 title = "Cuộc trò chuyện",
                 searchMode = SearchMode.None,
+                onChannelClick = { channelId ->
+                    rootNavController.navigate("conversation/${channelId.cid}")
+                },
             )
         }
     }

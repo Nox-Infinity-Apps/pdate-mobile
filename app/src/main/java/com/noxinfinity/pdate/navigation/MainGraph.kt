@@ -17,7 +17,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.noxinfinity.pdate.ui.MainActivity
-import com.noxinfinity.pdate.ui.screens.chat.ChatScreen
 import com.noxinfinity.pdate.ui.screens.chat.StreamChatScreen
 import com.noxinfinity.pdate.ui.screens.common.PlaceHolder
 import com.noxinfinity.pdate.ui.screens.home.HomeScreen
@@ -81,8 +80,12 @@ fun MainGraph(
             PlaceHolder()
         }
         composable(Graph.CHAT) {
-            StreamChatScreen()
+            StreamChatScreen(
+                navController = navController,
+                rootNavController = rootNavController,
+            )
         }
+
         composable(Graph.LOVE) {
             PlaceHolder()
         }
