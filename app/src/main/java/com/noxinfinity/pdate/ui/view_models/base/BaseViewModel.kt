@@ -24,7 +24,7 @@ abstract class BaseViewModel<State : IViewState, Event : IViewEvent> : ViewModel
     private val _uiEvent: MutableSharedFlow<Event> = MutableSharedFlow()
     val uiEvent = _uiEvent.asSharedFlow()
 
-    protected fun setState(reduce: State.() -> State) {
+    public fun setState(reduce: State.() -> State) {
         val newState = currentState.reduce()
         _uiState.value = newState
     }

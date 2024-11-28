@@ -5,7 +5,7 @@ import org.json.JSONObject
 
 class JWTHelper {
     companion object{
-        private fun decodeJwtPayLoad(jwt: String) : JSONObject? {
+        fun decodeJwtPayLoad(jwt: String) : JSONObject? {
             return try {
                 val parts = jwt.split(".")
                 if(parts.size < 2) return null
@@ -18,6 +18,11 @@ class JWTHelper {
                 e.printStackTrace()
                 null
             }
+        }
+
+        fun getStreamToken(jwt: String) : String {
+            val payload = decodeJwtPayLoad(jwt) ?: return ""
+            return (payload as JSONObject).optString("streamToken", "")
         }
 
         fun isJwtExpired(jwt: String) : Boolean {

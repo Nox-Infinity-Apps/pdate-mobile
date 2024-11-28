@@ -2,8 +2,11 @@ package com.noxinfinity.pdate.data.data_source.local
 
 import android.content.Context
 import android.content.SharedPreferences
+import javax.inject.Inject
 
-class SharedPreferencesManager(context: Context) {
+class SharedPreferencesManager @Inject constructor(
+    private val context: Context
+) {
     companion object {
         private const val PREFS_NAME = "user_prefs"
         private const val KEY_USER_TOKEN = "user_token"

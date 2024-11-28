@@ -9,12 +9,17 @@ import com.google.firebase.auth.FirebaseAuth
 import com.noxinfinity.pdate.R
 import com.noxinfinity.pdate.data.data_source.local.SharedPreferencesManager
 import com.noxinfinity.pdate.data.repository.home.HomeRepository
+import com.noxinfinity.pdate.data.repository.chat.ChatRepository
+import com.noxinfinity.pdate.ui.view_models.chat.ChatViewModel
 import com.noxinfinity.pdate.utils.Constants
+import com.noxinfinity.pdate.utils.helper.JWTHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import io.getstream.chat.android.client.ChatClient
+import io.getstream.chat.android.models.User
 import javax.inject.Singleton
 
 @Module
@@ -57,5 +62,6 @@ class AppModule {
             )
             .build()
     }
+
 
 }

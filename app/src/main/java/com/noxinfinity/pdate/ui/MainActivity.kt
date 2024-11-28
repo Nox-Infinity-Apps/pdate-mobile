@@ -12,6 +12,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.noxinfinity.pdate.navigation.RootGraph
 import com.noxinfinity.pdate.ui.screens.theme.DatingApplicationTheme
 import com.noxinfinity.pdate.ui.view_models.auth.AuthViewModel
+import com.noxinfinity.pdate.ui.view_models.chat.ChatViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -21,6 +22,7 @@ class MainActivity : ComponentActivity() {
     lateinit var googleSignInClient: GoogleSignInClient
 
     private val authViewModel: AuthViewModel by viewModels()
+    private val chatViewModel: ChatViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
