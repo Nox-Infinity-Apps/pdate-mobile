@@ -113,6 +113,14 @@ dependencies {
 
     //Stream chat
     implementation(libs.stream.chat.android.ui.components)
+    implementation(libs.stream.chat.android.client)
+    implementation(libs.stream.chat.android.state)
+    implementation(libs.stream.chat.android.offline)
+    implementation(libs.stream.chat.android.compose)
+    implementation(libs.android)
+
+
+
 
     //Graphql
     implementation(libs.apollo.runtime)
@@ -135,9 +143,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.androidx.material)
 
-    //Stream
-    implementation(libs.stream.chat.android.compose)
-    implementation(libs.stream.chat.android.offline)
+    implementation("com.mapbox.maps:android:10.14.0")
 
 }
 

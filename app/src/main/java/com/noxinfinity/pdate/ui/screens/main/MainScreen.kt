@@ -93,7 +93,6 @@ fun MainScreen(
 
     LaunchedEffect(uiState) {
         if (uiState is MainState.Error && (uiState as MainState.Error).tokenTimeOut) {
-
             authViewModel.signOut {
 
             }

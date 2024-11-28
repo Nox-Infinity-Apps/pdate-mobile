@@ -20,6 +20,7 @@ import com.noxinfinity.pdate.ui.MainActivity
 import com.noxinfinity.pdate.ui.screens.chat.StreamChatScreen
 import com.noxinfinity.pdate.ui.screens.common.PlaceHolder
 import com.noxinfinity.pdate.ui.screens.home.HomeScreen
+import com.noxinfinity.pdate.ui.screens.nearby.NearbyScreen
 import com.noxinfinity.pdate.ui.screens.profile.ProfileScreen
 import com.noxinfinity.pdate.ui.view_models.main.MainViewModel
 
@@ -77,7 +78,7 @@ fun MainGraph(
             )
         }
         composable(Graph.NEARBY) {
-            PlaceHolder()
+            NearbyScreen()
         }
         composable(Graph.CHAT) {
             StreamChatScreen(
