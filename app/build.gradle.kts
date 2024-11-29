@@ -144,7 +144,7 @@ dependencies {
     implementation(libs.androidx.material)
 
     implementation("com.mapbox.maps:android:10.14.0")
-
+    implementation("io.getstream:stream-video-android-core:1.0.20")
 }
 
 kapt {
