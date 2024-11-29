@@ -38,7 +38,7 @@ fun AppListTile(
     Column(
         modifier = modifier.fillMaxWidth(),
     ) {
-        Text(headerTitle ?: "", color=Color(0xFF4B4E52), fontSize = 14.sp, fontWeight = FontWeight.Bold)
+        Text(headerTitle ?: "", color=Color(0xFF4B4E52), fontSize = 16.sp, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.size(10.dp))
         Row(
             horizontalArrangement = Arrangement.Start,
@@ -74,7 +74,7 @@ fun AppListTile(
                 text = title,
                 color = Color(0xFF404852),
                 maxLines = 3,
-                fontSize = 15.sp,
+                fontSize = 16.sp,
                 fontWeight = FontWeight.Normal
             )
         }

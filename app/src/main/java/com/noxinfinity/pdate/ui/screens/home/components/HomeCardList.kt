@@ -305,7 +305,7 @@ fun HomeCardList(
                                 text = "Thông tin chính",
                                 color = Color(0xFF303236),
                                 fontWeight = FontWeight.Bold,
-                                fontSize = 15.sp
+                                fontSize = 18.sp
                             )
                         }
 
@@ -317,7 +317,7 @@ fun HomeCardList(
                             )
                         ) {
                             AppListTile(
-                                title = "${item?.distance} m",
+                                title = "${item?.distance} km",
                                 headerTitle = "Khoảng cách",
                                 icon = Lucide.Compass
                             )

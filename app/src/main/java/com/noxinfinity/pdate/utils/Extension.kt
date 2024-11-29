@@ -68,3 +68,4 @@ fun File.toUpload() : DefaultUpload {
 
     return upload
 }
+

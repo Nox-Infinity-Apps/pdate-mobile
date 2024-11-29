@@ -1,6 +1,8 @@
 package com.noxinfinity.pdate.ui.screens.profile
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,11 +28,13 @@ import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -45,12 +49,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.composables.icons.lucide.Locate
+import com.composables.icons.lucide.LogOut
 import com.composables.icons.lucide.Lucide
+import com.composables.icons.lucide.Pen
+import com.composables.icons.lucide.Settings
+import com.composables.icons.lucide.User
 import com.noxinfinity.pdate.LoginByGoogleMutation
 import com.noxinfinity.pdate.R
 import com.noxinfinity.pdate.ui.common.components.AppIndicator
+import com.noxinfinity.pdate.ui.common.components.CommonButton
 import com.noxinfinity.pdate.ui.common.components.NetworkImage
 import com.noxinfinity.pdate.ui.screens.common.AppListTile
 import com.noxinfinity.pdate.ui.view_models.profile.ProfileViewModel
@@ -58,9 +68,6 @@ import com.noxinfinity.pdate.utils.getString
 import com.noxinfinity.pdate.utils.heightPadding
 import com.noxinfinity.pdate.utils.helper.DateTimeHelper
 import com.noxinfinity.pdate.utils.widthPadding
-import compose.icons.FontAwesomeIcons
-import compose.icons.fontawesomeicons.Solid
-import compose.icons.fontawesomeicons.solid.Edit
 import kotlinx.coroutines.launch
 
 
@@ -80,22 +87,49 @@ fun ProfileScreen(modifier: Modifier = Modifier, onSignOut: () -> Unit, user: Lo
 
     Scaffold(
         topBar = {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(12.dp)
-            ) {
-                IconButton(
-                    onClick = toEditProfileScreen,
-                    modifier = Modifier.align(Alignment.CenterEnd)
-                ) {
-                    Icon(
-                        FontAwesomeIcons.Solid.Edit,
-                        modifier = Modifier.padding(6.dp),
-                        contentDescription = null
+
+            Row(horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(
+                horizontal = 16.dp,
+                vertical = 20.dp
+            )) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_heart),
+                        contentDescription = null,
+                        modifier = Modifier.size(30.dp)
+                    )
+                    Spacer(modifier = Modifier.size(8.dp))
+                    Text(
+                        "P-Date",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 25.sp,
+                        color = Color.Red
                     )
                 }
+                Spacer(modifier = Modifier.weight(1f))
+                Icon(
+                    Lucide.Settings,
+                    contentDescription = null,
+                    modifier = Modifier.size(30.dp)
+                )
             }
+
+//            Box(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(12.dp)
+//            ) {
+//                IconButton(
+//                    onClick = toEditProfileScreen,
+//                    modifier = Modifier.align(Alignment.CenterEnd)
+//                ) {
+//                    Icon(
+//                        FontAwesomeIcons.Solid.Edit,
+//                        modifier = Modifier.padding(6.dp),
+//                        contentDescription = null
+//                    )
+//                }
+//            }
 
         }
     ) { contentPadding ->
@@ -105,63 +139,92 @@ fun ProfileScreen(modifier: Modifier = Modifier, onSignOut: () -> Unit, user: Lo
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(16.dp)
                     .verticalScroll(
                         rememberScrollState()
                     ),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                NetworkImage(
-                    url = user.avatar ?: "",
-                    modifier = Modifier
-                        .size(100.dp)
-                        .clip(CircleShape),
-                )
-                16.heightPadding()
+                Box(modifier = Modifier.padding(
+                    top = 30.dp,
+                    bottom = 20.dp
+                )) {
+                    Box(
+                        modifier = Modifier
+                            .size(150.dp)
+                            .border(5.dp, Color.Red, CircleShape)
+                            .clip(CircleShape)
+                    ) {
+                        NetworkImage(
+                            url = user.avatar ?: "",
+                            modifier = Modifier
+                                .size(130.dp)
+                                .clip(CircleShape)
+                                .align(Alignment.Center)
+                        )
+                    }
+
+                    Surface(shape = CircleShape, modifier = Modifier.align(Alignment.TopEnd)
+                        .zIndex(1f)) {
+                        Box(
+                            modifier = Modifier.background(Color.White).clip(CircleShape).padding(7.dp)
+                        ) {
+                            Icon(
+                                Lucide.Pen,
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(30.dp)
+                                    .padding(4.dp)
+
+                            )
+                        }
+                    }
+                }
+                6.heightPadding()
                 Text(
                     text = user.fullName,
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.W400,
+                    fontSize = 26.sp
                 )
-                6.heightPadding()
+                30.heightPadding()
 
-                Button(
-                    onClick = {
-                        coroutineScope.launch {
-                            sheetState.show()
-                        }
-                        viewModel.fetchUser()
-                    },
-                    modifier = Modifier
-                        .padding(
-                            horizontal = 10.dp,
-                            vertical = 6.dp
-                        )
-                ) {
-                    Text("Xem profile cá nhân")
+                Column(modifier = Modifier.fillMaxWidth().background(Color(0x1EADADAD))) {
+                    CommonButton(
+                        leftIcon= {
+                            Icon(
+                                Lucide.User,
+                                contentDescription = null,
+                                modifier = Modifier.size(20.dp)
+                            )
+                        },
+                        label = "Trang cá nhân tôi",
+                        onClick = {
+                            coroutineScope.launch {
+                                sheetState.show()
+                            }
+                            viewModel.fetchUser()
+                        })
+                    HorizontalDivider(
+                        modifier = Modifier.fillMaxWidth(),
+                        color = Color(0x0C000000),
+                    )
+                    CommonButton(
+                        leftIcon= {
+                            Icon(
+                                Lucide.LogOut,
+                                contentDescription = null,
+                                modifier = Modifier.size(20.dp),
+                                tint = Color.Red
+                            )
+                        },
+                        label = "Đăng xuất",
+                        onClick = {
+                            onSignOut()
+                        },
+                        color = Color.Red)
                 }
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                Button(
-                    onClick = {
-                        onSignOut()
-                    },
-                    colors = ButtonColors(
-                        containerColor = Color.Red,
-                        contentColor = Color.White,
-                        disabledContainerColor = Color.Gray,
-                        disabledContentColor = Color.Black
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            horizontal = 10.dp,
-                            vertical = 6.dp
-                        )
-                ) {
-                    Text("Đăng xuất")
-                }
 
                 12.heightPadding()
 
@@ -195,7 +258,7 @@ fun ProfileScreen(modifier: Modifier = Modifier, onSignOut: () -> Unit, user: Lo
                                 url = item.avatar ?: "",
                                 modifier = Modifier
                                     .size(100.dp)
-                                    .clip(CircleShape),
+                                    .clip(CircleShape)
                             )
                             16.heightPadding()
                             Text(
