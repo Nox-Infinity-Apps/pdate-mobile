@@ -32,6 +32,7 @@ fun MainGraph(
     rootNavController: NavHostController,
     mainViewModel: MainViewModel,
     navController: NavHostController, modifier: Modifier = Modifier,
+    onSignOut: () -> Unit
 ) {
     val context = LocalContext.current
 
@@ -88,7 +89,9 @@ fun MainGraph(
             PlaceHolder()
         }
         composable(Graph.PROFILE) {
-            ProfileScreen()
+            ProfileScreen(
+                onSignOut = onSignOut
+            )
         }
     }
 }

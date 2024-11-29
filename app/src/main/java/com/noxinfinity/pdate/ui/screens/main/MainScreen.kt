@@ -47,8 +47,6 @@ fun MainScreen(
 
     val viewModel: MainViewModel = hiltViewModel()
 
-
-
     val notificationLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) {}
@@ -60,30 +58,30 @@ fun MainScreen(
             notificationLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
 
+        var token = ""
+
         FirebaseMessaging.getInstance().token
             .addOnCompleteListener { task ->
                 if (!task.isSuccessful) {
                     Log.w("FCM", "Fetching FCM registration token failed", task.exception)
-                    return@addOnCompleteListener
                 }
-                val token = task.result
-
-                if(PermissionHelper.checkLocationPermission(context)) {
-                    LocationServices.getFusedLocationProviderClient(context).lastLocation.addOnCompleteListener{
-                        val location = it.result
-                        LocationHelper.lat = location?.latitude ?: 0.0
-                        LocationHelper.lng = location?.longitude ?: 0.0
-
-                        viewModel.updateFcmAndLocation(
-                            fcmToken = token,
-                            lat = location?.latitude.toString(),
-                            lng = location?.longitude.toString(),
-                        )
-                    }
-                }
+                token = task.result
 
             }
 
+        if(PermissionHelper.checkLocationPermission(context)) {
+            LocationServices.getFusedLocationProviderClient(context).lastLocation.addOnCompleteListener{
+                val location = it.result
+                LocationHelper.lat = location?.latitude ?: 0.0
+                LocationHelper.lng = location?.longitude ?: 0.0
+
+                viewModel.updateFcmAndLocation(
+                    fcmToken = token,
+                    lat = location?.latitude.toString(),
+                    lng = location?.longitude.toString(),
+                )
+            }
+        }
 
         viewModel.fetchUser()
 
@@ -136,7 +134,12 @@ fun MainScreen(
                     rootNavController = rootNavController,
                     navController = navController,
                     modifier = Modifier.padding(innerPadding),
-                    mainViewModel = viewModel
+                    mainViewModel = viewModel,
+                    onSignOut = {
+                        authViewModel.signOut {
+
+                        }
+                    }
                 )
             }
         }

@@ -1,4 +1,4 @@
-mutation GetUserInfo($token: String!) {
+mutation LoginByGoogle($token: String!) {
     loginByGoogle(token: $token) {
         accessToken
         isNew
@@ -12,3 +12,42 @@ mutation GetUserInfo($token: String!) {
     }
 }
 
+query GetUserInfo {
+    getUserInfo {
+        ... on UserInfoSuccessResponse {
+            message
+            data {
+                avatar
+                bio
+                dob
+                email
+                fullName
+                grade {
+                    id
+                    name
+                }
+                hobbies {
+                    iconUrl
+                    id
+                    title
+                }
+                major {
+                    iconUrl
+                    id
+                    name
+                }
+                pictures {
+                    id
+                    url
+                }
+                purpose {
+                    id
+                    name
+                }
+            }
+        }
+        ... on UserInfoFailedResponse {
+            message
+        }
+    }
+}

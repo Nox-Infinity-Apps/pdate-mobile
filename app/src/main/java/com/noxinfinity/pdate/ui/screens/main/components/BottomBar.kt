@@ -20,6 +20,7 @@ import compose.icons.FeatherIcons
 import compose.icons.FontAwesomeIcons
 import compose.icons.SimpleIcons
 import compose.icons.feathericons.MoreHorizontal
+import compose.icons.feathericons.User
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Heart
 import compose.icons.fontawesomeicons.solid.Home
@@ -34,7 +35,7 @@ fun BottomBar(modifier: Modifier = Modifier, navController: NavController) {
         BottomNavItem("Nearby", FontAwesomeIcons.Solid.LocationArrow, Graph.NEARBY),
         BottomNavItem("Chat", SimpleIcons.Livechat, Graph.CHAT),
         BottomNavItem("Love", FontAwesomeIcons.Solid.Heart, Graph.LOVE),
-        BottomNavItem("More", FeatherIcons.MoreHorizontal, Graph.PROFILE)
+        BottomNavItem("Account", FeatherIcons.User, Graph.PROFILE)
     )
 
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
