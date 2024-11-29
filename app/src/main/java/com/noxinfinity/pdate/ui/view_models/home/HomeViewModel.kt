@@ -62,27 +62,29 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun dislikeProfile(id : String) {
+    private fun dislikeProfile(id : String?) {
         viewModelScope.launch {
             _state.value = _state.value.copy(
                 isLoading = true,
             )
-            repo.unLikeUser(id = id)
+            repo.unLikeUser(id = id ?: _state.value.profileList.first()!!.fcmId)
             _state.value = _state.value.copy(
                 isLoading = false,
             )
         }
     }
 
-    private fun likeProfile(id: String) {
+    private fun likeProfile(id: String?) {
         viewModelScope.launch {
             _state.value = _state.value.copy(
                 isLoading = true,
             )
-            val response = repo.likeUser(id)
+
+            val response = repo.likeUser(id ?: _state.value.profileList.first()!!.fcmId)
 
             response.fold(
                 onSuccess = {
+                    Log.d("HomeViewModel", "likeProfile: ${it.like}")
                     if(it.like?.isMatched != 0) {
                         _state.value = _state.value.copy(
                             isDialogShow = true,

@@ -24,12 +24,14 @@ class MainViewModel @Inject constructor(
     val uiState: StateFlow<MainState> = _uiState
 
     fun fetchUser() {
+        Log.d("FETCH_USER", "FETCH_USER")
         _uiState.value = MainState.Loading
         try {
             viewModelScope.launch {
                 val result = mainRepository.getUserInfo()
-                _uiState.value = result.fold(
+                result.fold(
                     onSuccess = {
+                        Log.d("FETCH_USER SUCCESS", it.toString())
                         if(it?.user == null) {
                             MainState.Error(
                                 "",
@@ -38,16 +40,16 @@ class MainViewModel @Inject constructor(
                         } else {
                             Log.d("FETCH_USER ACCESS TOKEN", it.accessToken)
                             sharedPreferencesManager.saveAccessToken(it.accessToken)
-                            MainState.Success(
+                            _uiState.value = MainState.Success(
                                 isNew = (it).isNew,
                                 user = (it).user
                             )
                         }
                     },
                     onFailure = {
-                        Log.d("FETCH_USER FAILED", it.toString())
-                        MainState.Error(
-                            it.message ?: "Error Fetching user"
+                        Log.e("FETCH_USER FAILED", it.toString())
+                        _uiState.value = MainState.Error(
+                            "",
                         )
                     }
                 )
@@ -65,7 +67,7 @@ class MainViewModel @Inject constructor(
                     Log.d("UPDATE_FCM", it)
                 },
                 onFailure = {
-                    Log.d("UPDATE_FCM", it.message?: "Unknown error")
+                    Log.d("UPDATE_FCM Failure", it.message?: "Unknown error")
                 }
             )
         }

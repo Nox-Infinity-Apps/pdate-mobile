@@ -2,7 +2,6 @@ package com.noxinfinity.pdate.ui.screens.home.components
 
 import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,7 +32,6 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,9 +50,9 @@ import com.noxinfinity.customtinderswiper.swipe_state.swiper
 import com.noxinfinity.pdate.R
 import com.noxinfinity.pdate.SuggestedUsersQuery
 import com.noxinfinity.pdate.ui.common.components.NetworkImage
-import com.noxinfinity.pdate.ui.screens.common.AppButton
 import com.noxinfinity.pdate.ui.screens.common.AppListTile
 import com.noxinfinity.pdate.ui.view_models.home.HomeEvent
+import com.noxinfinity.pdate.ui.view_models.home.HomeState
 import com.noxinfinity.pdate.utils.heightPadding
 import com.noxinfinity.pdate.utils.helper.DateTimeHelper
 import com.noxinfinity.pdate.utils.widthPadding
@@ -64,8 +62,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeCardList(
     modifier: Modifier = Modifier,
-    items: List<SuggestedUsersQuery.SuggestedUser?>,
-    isLoading: Boolean,
+    state: HomeState,
     swipeableCardState: SwipeableCardState,
     onTriggerEvent: (HomeEvent) -> Unit
 ) {
@@ -75,6 +72,8 @@ fun HomeCardList(
 
     val coroutineScope = rememberCoroutineScope()
 
+    val items = state.profileList
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -82,7 +81,7 @@ fun HomeCardList(
     ) {
         val scope = rememberCoroutineScope()
 
-        if (isLoading) {
+        if (state.isLoading || state.isFetching) {
             HomeCardSkeletonWithShimmer()
         }
         if (items.isEmpty()) {
@@ -98,19 +97,19 @@ fun HomeCardList(
                 modifier = Modifier.swiper(
                     state = swipeableCardState,
                     onSwiped = {
-                        val item = items.first()!!
                         when (it) {
                             SwipeDirection.Left -> {
-                                onTriggerEvent(HomeEvent.UnLike(id = item.fcmId))
+                                onTriggerEvent(HomeEvent.UnLike())
+                                onTriggerEvent(HomeEvent.PopUp)
                             }
 
                             SwipeDirection.Right -> {
-                                onTriggerEvent(HomeEvent.Like(id = item.fcmId))
-
+                                onTriggerEvent(HomeEvent.Like())
+                                onTriggerEvent(HomeEvent.PopUp)
                             }
 
                             SwipeDirection.Up -> {
-                                onTriggerEvent(HomeEvent.Think)
+                                onTriggerEvent(HomeEvent.PopUp)
                             }
 
                             SwipeDirection.Down -> {}
@@ -123,6 +122,7 @@ fun HomeCardList(
             )
         } else {
             items.take(2).reversed().forEachIndexed { index, item ->
+
                 if (index == 1) {
                     HomeCardItem(
                         profileData = item!!,
@@ -134,14 +134,15 @@ fun HomeCardList(
                         modifier = Modifier.swiper(
                             state = swipeableCardState,
                             onSwiped = {
+
                                 when (it) {
                                     SwipeDirection.Left -> {
-                                        onTriggerEvent(HomeEvent.UnLike(id = item.fcmId))
+                                        onTriggerEvent(HomeEvent.UnLike())
                                         onTriggerEvent(HomeEvent.PopUp)
                                     }
 
                                     SwipeDirection.Right -> {
-                                        onTriggerEvent(HomeEvent.Like(id = item.fcmId))
+                                        onTriggerEvent(HomeEvent.Like())
                                         onTriggerEvent(HomeEvent.PopUp)
                                     }
 
@@ -218,6 +219,53 @@ fun HomeCardList(
 
                         16.heightPadding()
 
+                        if(!item.purpose.isNullOrEmpty()) {
+                            Row(
+                                horizontalArrangement = Arrangement.Start,
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Box(
+                                    modifier = Modifier.size(25.dp)
+                                ) {
+                                    Image(
+                                        painter = painterResource(R.drawable.purpose),
+                                        contentDescription = null
+                                    )
+                                }
+
+                                15.widthPadding()
+
+                                Text(
+                                    text = "Mục đích",
+                                    color = Color.Black,
+                                    fontWeight = FontWeight.Bold,
+                                )
+                            }
+                        }
+
+                        12.heightPadding()
+
+                        FlowRow(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        ) {
+                            item.purpose?.forEach {
+                                AssistChip(
+                                    onClick = { /* Handle click */ },
+                                    label = { Text(it ?: "") },
+                                    shape = RoundedCornerShape(8.dp),
+                                    colors = AssistChipDefaults.assistChipColors(
+                                        containerColor = Color(0xFFF1F1F1),
+                                        labelColor = Color.Black,
+                                    ),
+                                    border = null
+                                )
+                            }
+                        }
+
+                        16.heightPadding()
+
                         Row(
                             horizontalArrangement = Arrangement.Start,
                             verticalAlignment = Alignment.CenterVertically,
@@ -251,10 +299,6 @@ fun HomeCardList(
                             AppListTile(
                                 assets = R.drawable.birthday,
                                 title = "${item.distance} m",
-                            )
-                            AppListTile(
-                                assets = R.drawable.purpose,
-                                title = "${item.purpose}",
                             )
                             AppListTile(
                                 assets = R.drawable.gender,
@@ -328,7 +372,6 @@ fun HomeCardList(
                                         modifier = Modifier
                                             .height(150.dp)
                                             .clip(RoundedCornerShape(18.dp)),
-
                                         )
                                 }
                             }
@@ -346,10 +389,12 @@ fun HomeCardList(
                                     onTriggerEvent(HomeEvent.PopUp)
                                 }
                             },
-                            modifier = Modifier.fillMaxWidth().padding(
-                                horizontal = 10.dp,
-                                vertical = 6.dp
-                            )
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    horizontal = 10.dp,
+                                    vertical = 6.dp
+                                )
                         ) {
                             Text("Chặn người dùng này")
                         }

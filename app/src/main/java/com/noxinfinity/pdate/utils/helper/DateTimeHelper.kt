@@ -5,7 +5,15 @@ import java.time.format.DateTimeFormatter
 
 class DateTimeHelper {
     companion object {
-        fun formatToDDMMYYYY(date: String): String {
+        fun formatToDDMMYYYY(date: String?): String {
+            if(date.isNullOrBlank()) {
+                return ""
+            }
+
+            if(date[4] != '-') {
+                return date
+            }
+
             val inputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S")
 
             val outputFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy")

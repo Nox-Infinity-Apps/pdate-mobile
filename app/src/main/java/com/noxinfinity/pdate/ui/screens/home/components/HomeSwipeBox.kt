@@ -35,8 +35,7 @@ fun HomeSwipeBox(
     ) {
         HomeCardList(
             modifier = Modifier.fillMaxSize(),
-            items = state.profileList,
-            isLoading = state.isLoading,
+            state = state,
             swipeableCardState = cardStackState,
             onTriggerEvent = onTriggerEvent
         )
@@ -110,10 +109,8 @@ fun HomeSwipeBox(
                                 SwipeDirection.Right
                             )
                             onTriggerEvent(HomeEvent.PopUp)
-
                         }
                     }
-
                 },
                 modifier = Modifier.weight(1f),
                 isChosen = cardStackState.swipedDirection == SwipeDirection.Right

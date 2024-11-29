@@ -155,8 +155,11 @@ apollo {
     service("service") {
         packageName.set("com.noxinfinity.pdate")
         introspection {
-            endpointUrl.set("https://8212-14-248-82-60.ngrok-free.app/graphql")
+            endpointUrl.set("https://2ec1-14-177-92-116.ngrok-free.app/graphql")
             schemaFile.set(file("src/main/graphql/schema.graphqls"))
         }
     }
 }
+
+//endpointUrl.set("https://4577-14-177-92-116.ngrok-free.app/graphql")
+//8212-14-248-82-60.ngrok-free.app
