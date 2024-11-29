@@ -1,0 +1,34 @@
+query SuggestUsersNearBy($lat: Float!, $lng: Float!, $offset: Int!) {
+    suggestedUsersNearBy(currentLng: $lng, offset: $offset, currentLat: $lat) {
+        allHobbies {
+            iconUrl
+            id
+            title
+        }
+        avatarUrl
+        bio
+        commonHobbies {
+            iconUrl
+            id
+            title
+        }
+        distance
+        dob
+        fcmId
+        fullName
+        gender
+        grade {
+            id
+            name
+        }
+        major {
+            iconUrl
+            name
+            id
+        }
+        pictures
+        purpose
+        lat
+        lng
+    }
+}

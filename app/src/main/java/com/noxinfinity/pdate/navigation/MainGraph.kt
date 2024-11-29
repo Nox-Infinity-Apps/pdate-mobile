@@ -76,7 +76,7 @@ fun MainGraph(
             )
         }
         composable(Graph.NEARBY) {
-            NearbyScreen()
+            NearbyScreen(mainViewModel, navController)
         }
         composable(Graph.CHAT) {
             StreamChatScreen(

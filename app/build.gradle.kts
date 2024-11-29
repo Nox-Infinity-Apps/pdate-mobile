@@ -80,6 +80,7 @@ dependencies {
 
     //Coil
     implementation(libs.coil.compose)
+    implementation(libs.coil.compose.v222)
 
     //Paging 3
     implementation(libs.androidx.paging.runtime)
@@ -117,10 +118,14 @@ dependencies {
     implementation(libs.stream.chat.android.state)
     implementation(libs.stream.chat.android.offline)
     implementation(libs.stream.chat.android.compose)
-    implementation(libs.android)
 
 
 
+    // Mapbox
+    implementation("com.mapbox.maps:android:11.8.0") {
+        exclude(group = "com.google.android.gms", module = "play-services-cronet")
+    }
+    implementation ("com.mapbox.extension:maps-compose:11.8.0")
 
     //Graphql
     implementation(libs.apollo.runtime)
@@ -144,7 +149,7 @@ dependencies {
     implementation(libs.androidx.material)
 
     implementation("com.mapbox.maps:android:10.14.0")
-    implementation("io.getstream:stream-video-android-core:1.0.20")
+
 }
 
 kapt {
