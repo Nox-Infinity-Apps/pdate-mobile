@@ -1,7 +1,9 @@
 package com.noxinfinity.pdate.utils.helper
 
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Date
 
 class DateTimeHelper {
     companion object {
@@ -21,6 +23,11 @@ class DateTimeHelper {
             val dateTime = LocalDateTime.parse(date, inputFormat)
 
             return dateTime.format(outputFormat)
+        }
+
+        fun convertMilisToDate(date: Long) : String {
+            val sdf = SimpleDateFormat("dd/MM/yyyy")
+            return sdf.format(Date(date))
         }
     }
 }

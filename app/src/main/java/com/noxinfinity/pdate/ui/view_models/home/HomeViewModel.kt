@@ -121,6 +121,7 @@ class HomeViewModel @Inject constructor(
 
             response.fold(
                 onSuccess = {
+                    Log.d("HomeViewModel", "loadMoreProfile: $it")
                     _state.value = _state.value.copy(
                         profileList = _state.value.profileList + it,
                         offset = _state.value.offset + 1,

@@ -460,17 +460,17 @@ type Major {
 }
 
 type Mutation {
-  addToTestUser(name: String!): Response
+  updateUserInfo(input: UpdateUserInfo): UserInfoResponse!
 
-  loginByGoogle(token: String!): LoginByGoogleResponse
+  blockUser(blockedUserId: String!): BlockUserResponse!
 
-  loginByApple(token: String!): String
+  unblockUser(blockedUserId: String!): BlockUserResponse!
 
-  like(targetUserId: String!): LikeUserResponse
+  updateFcmTokenAndLocation(input: UpdateFcmTokenAndLocation!): UserInfoSuccessResponse!
 
-  unlike(targetUserId: String!): UnLikeUserResponse
+  updateUserPurpose(purposeIds: [Int]!): GetAllPurposeResponse!
 
-  GetStreamToken(UserId: String!): GetStreamTokenResult!
+  dontCarekUser(dontCareUserId: String!): DontCareUserResponse
 
   uploadScriptWithMultipartPOST(file: Upload!): CloudinaryUploadResponse!
 
@@ -486,17 +486,17 @@ type Mutation {
 
   deletePictureById(id: String!): UserPicsMutationResponse!
 
-  updateUserInfo(input: UpdateUserInfo): UserInfoResponse!
+  GetStreamToken(UserId: String!): GetStreamTokenResult!
 
-  blockUser(blockedUserId: String!): BlockUserResponse!
+  like(targetUserId: String!): LikeUserResponse
 
-  unblockUser(blockedUserId: String!): BlockUserResponse!
+  unlike(targetUserId: String!): UnLikeUserResponse
 
-  updateFcmTokenAndLocation(input: UpdateFcmTokenAndLocation!): UserInfoSuccessResponse!
+  addToTestUser(name: String!): Response
 
-  updateUserPurpose(purposeIds: [Int]!): GetAllPurposeResponse!
+  loginByGoogle(token: String!): LoginByGoogleResponse
 
-  dontCarekUser(dontCareUserId: String!): DontCareUserResponse
+  loginByApple(token: String!): String
 }
 
 type Pics {
@@ -524,12 +524,6 @@ type Query {
 
   getAllHobbies: HobbiesResponse!
 
-  getListCategory: [Category]!
-
-  getAllConversation(limit: Int!, page: Int!): GetAllConversationResponse
-
-  getUserPics: UserPicsQueryResponse!
-
   getUserInfo: UserInfoResponse!
 
   suggestedUsers(currentLat: Float!, currentLng: Float!, offset: Int): [UserSuggest]
@@ -543,6 +537,16 @@ type Query {
   getAllPurpose: GetAllPurposeResponse!
 
   getLikedUser: [UserData]
+
+  getUserPics: UserPicsQueryResponse!
+
+  getListGrade: [Grade]
+
+  getListMajor: [Major]
+
+  getAllConversation(limit: Int!, page: Int!): GetAllConversationResponse
+
+  getListCategory: [Category]!
 
   _service: _Service!
 }
@@ -723,6 +727,10 @@ type UserSuggest {
   purpose: [String]
 
   pictures: [String]
+
+  lat: Float
+
+  lng: Float
 }
 
 scalar _FieldSet

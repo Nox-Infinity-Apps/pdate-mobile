@@ -10,7 +10,7 @@ data class HomeState(
     val isLoading: Boolean = false,
     val isFetching: Boolean = false,
     val isDialogShow: Boolean = false,
-    val dialogData : DialogData = DialogData(name = "", conversationId = "")
+    val dialogData : DialogData = DialogData(name = "", conversationId = ""),
 )
 
 data class DialogData (val name: String, val conversationId: String)
