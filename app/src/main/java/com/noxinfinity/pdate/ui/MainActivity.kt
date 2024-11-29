@@ -17,6 +17,7 @@ import com.noxinfinity.pdate.navigation.RootGraph
 import com.noxinfinity.pdate.ui.screens.theme.DatingApplicationTheme
 import com.noxinfinity.pdate.ui.view_models.auth.AuthViewModel
 import com.noxinfinity.pdate.ui.view_models.chat.ChatViewModel
+import com.noxinfinity.pdate.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
 import io.getstream.chat.android.client.ChatClient
 import io.getstream.chat.android.state.plugin.config.StatePluginConfig
@@ -29,7 +30,6 @@ class MainActivity : ComponentActivity() {
     lateinit var googleSignInClient: GoogleSignInClient
 
     private val authViewModel: AuthViewModel by viewModels()
-    private val chatViewModel: ChatViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,10 +43,9 @@ class MainActivity : ComponentActivity() {
             ),
             appContext = this
         )
-        ChatClient.Builder("625kk64h8kah", this)
+        ChatClient.Builder(Constants.STREAM_API_KEY, this)
             .withPlugins(statePluginFactory)
             .build()
-
 
 
         val signInLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->

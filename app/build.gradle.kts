@@ -147,6 +147,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.androidx.material)
+    implementation("com.composables:icons-lucide:1.0.0")
+
 
     implementation("com.mapbox.maps:android:10.14.0")
 

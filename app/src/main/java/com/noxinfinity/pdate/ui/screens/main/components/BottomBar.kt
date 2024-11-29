@@ -1,7 +1,12 @@
 package com.noxinfinity.pdate.ui.screens.main.components
 
+import HomeIcon
+import LocationIcon
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -9,44 +14,53 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.composables.icons.lucide.HardDrive
+import com.composables.icons.lucide.Heart
+import com.composables.icons.lucide.House
+import com.composables.icons.lucide.Lucide
+import com.composables.icons.lucide.MessageCircleHeart
+import com.composables.icons.lucide.Navigation
+import com.composables.icons.lucide.UserRound
 import com.noxinfinity.pdate.navigation.Graph
 import compose.icons.FeatherIcons
 import compose.icons.FontAwesomeIcons
 import compose.icons.SimpleIcons
-import compose.icons.feathericons.MoreHorizontal
 import compose.icons.feathericons.User
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Heart
-import compose.icons.fontawesomeicons.solid.Home
-import compose.icons.fontawesomeicons.solid.LocationArrow
 import compose.icons.simpleicons.Livechat
 
 @Composable
 fun BottomBar(modifier: Modifier = Modifier, navController: NavController) {
 
     val items = listOf(
-        BottomNavItem("Home", FontAwesomeIcons.Solid.Home, Graph.HOME),
-        BottomNavItem("Nearby", FontAwesomeIcons.Solid.LocationArrow, Graph.NEARBY),
-        BottomNavItem("Chat", SimpleIcons.Livechat, Graph.CHAT),
-        BottomNavItem("Love", FontAwesomeIcons.Solid.Heart, Graph.LOVE),
-        BottomNavItem("Account", FeatherIcons.User, Graph.PROFILE)
+        BottomNavItem("Trang chủ", Lucide.House, Graph.HOME),
+        BottomNavItem("Gần đây", Lucide.Navigation, Graph.NEARBY),
+        BottomNavItem("Trò chuyện", Lucide.MessageCircleHeart, Graph.CHAT),
+        BottomNavItem("Yêu thích",Lucide.Heart, Graph.LOVE),
+        BottomNavItem("Cá nhân", Lucide.UserRound, Graph.PROFILE)
     )
 
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route
 
     NavigationBar(
-        containerColor = Color.White
+        containerColor = Color.White,
+        modifier  = Modifier.clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+            .shadow(4.dp, shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)) // Add shadow to the top
+
     ) {
         items.forEach { item ->
             NavigationBarItem(
-                icon = { Icon(item.icon, contentDescription = item.title, modifier = Modifier.size(24.dp)) },
+                icon = { Icon(item.icon, contentDescription = item.title, modifier = Modifier.size(25.dp).padding(0.dp) ) },
                 label = { Text(text = item.title) },
                 selected = currentRoute == item.route,
                 onClick = {
@@ -55,15 +69,16 @@ fun BottomBar(modifier: Modifier = Modifier, navController: NavController) {
                             saveState = true
                         }
                         launchSingleTop = true
-                        restoreState = true
+                        restoreState = false
                     }
                 },
                 colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = Color.Red,
-                    unselectedIconColor = Color.Gray,
-                    selectedTextColor = Color.Red,
-                    unselectedTextColor = Color.Gray
-                )
+                    selectedIconColor = Color(0xFFFF2929),
+                    unselectedIconColor = Color(0xffc2c4c8),
+                    selectedTextColor = Color(0xFFFF2929),
+                    unselectedTextColor = Color(0xffc2c4c8),
+                    indicatorColor= Color.Transparent,
+                ) ,
             )
         }
     }
