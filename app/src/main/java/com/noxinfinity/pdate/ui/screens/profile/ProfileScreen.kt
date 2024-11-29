@@ -46,6 +46,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.composables.icons.lucide.Locate
+import com.composables.icons.lucide.Lucide
 import com.noxinfinity.pdate.LoginByGoogleMutation
 import com.noxinfinity.pdate.R
 import com.noxinfinity.pdate.ui.common.components.AppIndicator
@@ -290,18 +292,26 @@ fun ProfileScreen(modifier: Modifier = Modifier, onSignOut: () -> Unit, user: Lo
                                 AppListTile(
                                     assets = R.drawable.gender,
                                     title = item.gender?.getString() ?: "",
+                                    headerTitle = "Khoảng cách",
+                                    icon = Lucide.Locate
                                 )
                                 AppListTile(
                                     assets = R.drawable.location,
                                     title = "${item.dob?.let { DateTimeHelper.formatToDDMMYYYY(it) }}",
+                                    headerTitle = "Khoảng cách",
+                                    icon = Lucide.Locate
                                 )
                                 AppListTile(
                                     assets = R.drawable.student,
                                     title = item.grade?.name ?: "",
+                                    headerTitle = "Khoảng cách",
+                                    icon = Lucide.Locate
                                 )
                                 AppListTile(
                                     assets = R.drawable.major,
                                     title = item.major?.name ?: "",
+                                    headerTitle = "Khoảng cách",
+                                    icon = Lucide.Locate
                                 )
                             }
 

@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.noxinfinity.pdate.R
+import com.noxinfinity.pdate.navigation.Graph
 import com.noxinfinity.pdate.ui.screens.home.components.HomeHeader
 import com.noxinfinity.pdate.ui.screens.home.components.HomeSwipeBox
 import com.noxinfinity.pdate.ui.view_models.home.HomeViewModel
@@ -83,7 +84,7 @@ fun HomeScreen(
                     Button(
                         onClick = {
                             homeViewModel.onDismissDialog()
-                            ///TODO: Route qua man chat
+                            rootNavController.navigate("conversation/${viewState.dialogData.conversationId}")
                         },
                         colors = ButtonColors(
                             containerColor = Color(0xffff4459),

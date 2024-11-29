@@ -30,13 +30,6 @@ import com.composables.icons.lucide.MessageCircleHeart
 import com.composables.icons.lucide.Navigation
 import com.composables.icons.lucide.UserRound
 import com.noxinfinity.pdate.navigation.Graph
-import compose.icons.FeatherIcons
-import compose.icons.FontAwesomeIcons
-import compose.icons.SimpleIcons
-import compose.icons.feathericons.User
-import compose.icons.fontawesomeicons.Solid
-import compose.icons.fontawesomeicons.solid.Heart
-import compose.icons.simpleicons.Livechat
 
 @Composable
 fun BottomBar(modifier: Modifier = Modifier, navController: NavController) {
@@ -60,8 +53,8 @@ fun BottomBar(modifier: Modifier = Modifier, navController: NavController) {
     ) {
         items.forEach { item ->
             NavigationBarItem(
-                icon = { Icon(item.icon, contentDescription = item.title, modifier = Modifier.size(25.dp).padding(0.dp) ) },
-                label = { Text(text = item.title) },
+                icon = { Icon(item.icon, contentDescription = item.title, modifier = Modifier.size(28.dp).padding(0.dp) ) },
+                label = {},
                 selected = currentRoute == item.route,
                 onClick = {
                     navController.navigate(item.route) {
@@ -72,6 +65,7 @@ fun BottomBar(modifier: Modifier = Modifier, navController: NavController) {
                         restoreState = false
                     }
                 },
+                alwaysShowLabel=false,
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = Color(0xFFFF2929),
                     unselectedIconColor = Color(0xffc2c4c8),
@@ -79,6 +73,7 @@ fun BottomBar(modifier: Modifier = Modifier, navController: NavController) {
                     unselectedTextColor = Color(0xffc2c4c8),
                     indicatorColor= Color.Transparent,
                 ) ,
+
             )
         }
     }
