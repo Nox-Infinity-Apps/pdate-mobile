@@ -11,6 +11,11 @@ query SuggestedUsers($currentLat: Float!, $currentLng: Float!, $offset: Int = 0)
             id
             title
         }
+        allHobbies {
+            iconUrl
+            id
+            title
+        }
         distance
         dob
         fcmId
@@ -47,6 +52,12 @@ mutation UnlikeUser($targetUserId: String!) {
 
 mutation BlockUser($blockedUserId: String!) {
     blockUser(blockedUserId: $blockedUserId) {
+        message
+    }
+}
+
+mutation DontCareUser($dontCareUserId: String!) {
+    dontCarekUser(dontCareUserId: $dontCareUserId) {
         message
     }
 }

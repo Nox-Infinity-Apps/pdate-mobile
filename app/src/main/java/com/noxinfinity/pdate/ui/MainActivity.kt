@@ -36,8 +36,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-
-
         val statePluginFactory = StreamStatePluginFactory(
             config = StatePluginConfig(
                 backgroundSyncEnabled = true,

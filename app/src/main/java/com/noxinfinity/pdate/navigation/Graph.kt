@@ -12,4 +12,5 @@ object Graph {
     const val ONBOARDING = "onboarding_graph"
     const val EMPTY = "empty_graph"
     const val MESSAGE = "conversation/{id}"
+    const val EDIT_PROFILE = "edit_profile"
 }

@@ -6,6 +6,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Point
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,6 +23,7 @@ import com.noxinfinity.pdate.ui.screens.common.PlaceHolder
 import com.noxinfinity.pdate.ui.screens.home.HomeScreen
 import com.noxinfinity.pdate.ui.screens.nearby.NearbyScreen
 import com.noxinfinity.pdate.ui.screens.profile.ProfileScreen
+import com.noxinfinity.pdate.ui.view_models.main.MainState
 import com.noxinfinity.pdate.ui.view_models.main.MainViewModel
 
 //import io.getstream.chat.android.compose.ui.theme.ChatTheme
@@ -61,6 +63,8 @@ fun MainGraph(
         )
     }
 
+    val user = mainViewModel.uiState.collectAsState()
+
 
     NavHost(
         navController = navController,
@@ -90,7 +94,11 @@ fun MainGraph(
         }
         composable(Graph.PROFILE) {
             ProfileScreen(
-                onSignOut = onSignOut
+                onSignOut = onSignOut,
+                user = (user.value as MainState.Success).user,
+                toEditProfileScreen = {
+                    rootNavController.navigate(Graph.EDIT_PROFILE)
+                }
             )
         }
     }

@@ -3,6 +3,7 @@ package com.noxinfinity.pdate.data.repository.home
 import android.util.Log
 import com.apollographql.apollo.ApolloClient
 import com.noxinfinity.pdate.BlockUserMutation
+import com.noxinfinity.pdate.DontCareUserMutation
 import com.noxinfinity.pdate.LikeUserMutation
 import com.noxinfinity.pdate.R
 import com.noxinfinity.pdate.SuggestedUsersQuery
@@ -151,4 +152,20 @@ class HomeRepository @Inject constructor(
             Result.failure(e)
         }
     }
+
+    suspend fun dontCareUser(id:String) : Result<DontCareUserMutation.Data> {
+        return try {
+            val response = client.mutation(DontCareUserMutation(dontCareUserId = id)).execute()
+
+            val data = response.data
+            return if(data != null) {
+                Result.success(data)
+            } else {
+                Result.failure(Exception("No data"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 }

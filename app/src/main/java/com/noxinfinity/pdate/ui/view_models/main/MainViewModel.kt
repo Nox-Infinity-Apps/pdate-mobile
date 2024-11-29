@@ -18,6 +18,13 @@ class MainViewModel @Inject constructor(
     private val sharedPreferencesManager: SharedPreferencesManager,
 ) : ViewModel() {
 
+    init {
+        val token = sharedPreferencesManager.getToken()
+        if(token.isNullOrBlank()) {
+
+        }
+    }
+
     private val _uiState = MutableStateFlow<MainState>(
         value = MainState.Loading
     )
@@ -33,7 +40,7 @@ class MainViewModel @Inject constructor(
                     onSuccess = {
                         Log.d("FETCH_USER SUCCESS", it.toString())
                         if(it?.user == null) {
-                            MainState.Error(
+                            _uiState.value = MainState.Error(
                                 "",
                                 tokenTimeOut = true,
                             )

@@ -3,27 +3,26 @@ package com.noxinfinity.pdate.ui.view_models.profile
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.noxinfinity.pdate.data.repository.edit_profile.EditProfileRepository
 import com.noxinfinity.pdate.data.repository.profile.ProfileRepository
 import com.noxinfinity.pdate.ui.view_models.main.MainState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val profileRepository: ProfileRepository
+    private val profileRepository: ProfileRepository,
+
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ProfileState())
     val uiState: StateFlow<ProfileState> = _uiState
 
 
-    init {
-        fetchUser()
-    }
-
-    private fun fetchUser() {
+    fun fetchUser() {
         _uiState.value = ProfileState(isLoading = true)
         try {
             viewModelScope.launch {
@@ -43,6 +42,8 @@ class ProfileViewModel @Inject constructor(
             Log.d("FETCH_USER FAILED", e.message ?: "Unknown error")
         }
     }
+
+
 
 
 }

@@ -159,8 +159,9 @@ kapt {
 apollo {
     service("service") {
         packageName.set("com.noxinfinity.pdate")
+        mapScalarToUpload("Upload")
         introspection {
-            endpointUrl.set("https://2ec1-14-177-92-116.ngrok-free.app/graphql")
+            endpointUrl.set("https:/2ec1-14-177-92-116.ngrok-free.app/graphql")
             schemaFile.set(file("src/main/graphql/schema.graphqls"))
         }
     }

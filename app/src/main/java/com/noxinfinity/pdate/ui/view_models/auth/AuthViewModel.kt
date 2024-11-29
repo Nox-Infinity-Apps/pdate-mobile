@@ -28,21 +28,24 @@ class AuthViewModel @Inject constructor(
 
     fun checkLoginState() {
         _authState.value = _authState.value.copy(isLoading = true)
+
         val token = sharedPreferences.getToken()
-        Log.d("ACCESS_TOKEN", token.toString())
-        if(token != null) {
-            if(!JWTHelper.isJwtExpired(token)) {
-                _authState.value = _authState.value.copy(isLoggedIn = true)
-            }
+        Log.d("GOOGLE_TOKEN", token.toString())
+        if (token != null && !JWTHelper.isJwtExpired(token)) {
+
+            _authState.value = _authState.value.copy(isLoggedIn = true, isLoading = false)
+
+        } else {
+            _authState.value = _authState.value.copy(isLoggedIn = false, isLoading = false)
         }
-        _authState.value = _authState.value.copy(isLoading = false)
+
     }
 
     fun firebaseAuthWithGoogle(idToken: String) {
         viewModelScope.launch {
             val credential = GoogleAuthProvider.getCredential(idToken, null)
-            auth.signInWithCredential(credential).addOnCompleteListener{
-                if(it.isSuccessful) {
+            auth.signInWithCredential(credential).addOnCompleteListener {
+                if (it.isSuccessful) {
                     val user = auth.currentUser
                     _authState.value = _authState.value.copy(isSuccess = true, isLoggedIn = true)
                     user?.getIdToken(true)?.addOnCompleteListener { task ->
@@ -52,7 +55,7 @@ class AuthViewModel @Inject constructor(
                                 sharedPreferences.saveToken(accessToken)
                                 Log.d("ACCESS_TOKEN", accessToken.toString())
                             }
-                        } else{
+                        } else {
                             Log.d("GOOGLE", "firebaseAuthWithGoogle: ${it.exception}")
                         }
                     }?.addOnFailureListener {

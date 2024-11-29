@@ -53,6 +53,7 @@ import com.noxinfinity.pdate.ui.common.components.NetworkImage
 import com.noxinfinity.pdate.ui.screens.common.AppListTile
 import com.noxinfinity.pdate.ui.view_models.home.HomeEvent
 import com.noxinfinity.pdate.ui.view_models.home.HomeState
+import com.noxinfinity.pdate.utils.getString
 import com.noxinfinity.pdate.utils.heightPadding
 import com.noxinfinity.pdate.utils.helper.DateTimeHelper
 import com.noxinfinity.pdate.utils.widthPadding
@@ -302,7 +303,7 @@ fun HomeCardList(
                             )
                             AppListTile(
                                 assets = R.drawable.gender,
-                                title = "${item.gender}",
+                                title = item.gender.getString(),
                             )
                             AppListTile(
                                 assets = R.drawable.location,
@@ -324,7 +325,7 @@ fun HomeCardList(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
-                            item.commonHobbies?.forEach {
+                            item.allHobbies?.forEach {
                                 AssistChip(
                                     onClick = { /* Handle click */ },
                                     label = { Text(it?.title ?: "") },

@@ -1,6 +1,7 @@
 package com.noxinfinity.pdate.ui.view_models.profile
 
 import com.noxinfinity.pdate.GetUserInfoQuery
+import com.noxinfinity.pdate.type.Gender
 
 data class ProfileState (
     val user: GetUserInfoQuery.Data1 = initialData,
@@ -18,4 +19,5 @@ val initialData  = GetUserInfoQuery.Data1(
     major = null,
     pictures = null,
     purpose = null,
+    gender = Gender.MALE
 )

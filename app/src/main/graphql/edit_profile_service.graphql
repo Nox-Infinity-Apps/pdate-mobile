@@ -1,0 +1,44 @@
+mutation UploadAvatar($file: Upload!) {
+    uploadAvatar(file: $file) {
+        data
+        message
+    }
+}
+
+query GetAllPurpose {
+    getAllPurpose {
+        data {
+            id
+            name
+        }
+        message
+    }
+}
+
+mutation UpdateUserPurpose($purposeIds: [Int]!) {
+    updateUserPurpose(purposeIds: $purposeIds) {
+        data {
+            id
+            name
+        }
+        message
+    }
+}
+
+mutation UploadPicture($file: Upload!) {
+    uploadPicture(file: $file) {
+        message
+    }
+}
+
+mutation DeletePictureById($id: String!) {
+    deletePictureById(id: $id) {
+        message
+    }
+}
+
+mutation UpdatePictureById($file: Upload!, $id: String!) {
+    updatePictureById(file: $file, id: $id) {
+        message
+    }
+}

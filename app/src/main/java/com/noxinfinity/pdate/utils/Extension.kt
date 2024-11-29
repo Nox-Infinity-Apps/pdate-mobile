@@ -13,6 +13,11 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import com.apollographql.apollo.api.DefaultUpload
+import com.noxinfinity.pdate.type.Gender
+import com.noxinfinity.pdate.type.Upload
+import com.noxinfinity.pdate.utils.helper.UploadRequestBody
+import java.io.File
 
 @Composable
 fun Int.heightPadding() {
@@ -44,3 +49,22 @@ fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier = composed {
     }
 }
 
+fun Gender.getString() : String {
+    return when (this) {
+        Gender.MALE -> "Nam"
+        Gender.FEMALE -> "Nữ"
+        Gender.OTHER -> "Khác"
+        else -> "Không xác định"
+    }
+}
+
+fun File.toUpload() : DefaultUpload {
+    val body = UploadRequestBody(this, "image")
+    val upload = DefaultUpload.Builder()
+        .content(this.readBytes())
+        .fileName(this.name)
+        .contentType(body.contentType().toString())
+        .build()
+
+    return upload
+}
