@@ -317,7 +317,7 @@ fun HomeCardList(
                             )
                         ) {
                             AppListTile(
-                                title = "${item?.distance} km",
+                                title = "%.1f km".format(item?.distance?.div(1000.0)),
                                 headerTitle = "Khoảng cách",
                                 icon = Lucide.Compass
                             )

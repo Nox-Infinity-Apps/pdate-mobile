@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "788183134168-tst2dkgres0hajbjc06fsodlp5ur9d00.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.noxinfinity.pdate",
+            "certificate_hash": "2a87dcd29b1f4a6335b6affa09ca5bb95bd3474e"
+          }
+        },
+        {
           "client_id": "788183134168-p0315ds2gq50l46lnsjr2rce9q8d5enr.apps.googleusercontent.com",
           "client_type": 3
         }
