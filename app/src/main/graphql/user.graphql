@@ -22,27 +22,28 @@ query GetUserInfo {
                 dob
                 email
                 fullName
+                gender
                 grade {
                     id
                     name
                 }
                 hobbies {
                     iconUrl
-                    id
                     title
+                    id
                 }
                 major {
                     iconUrl
-                    id
                     name
+                    id
                 }
                 pictures {
-                    id
                     url
+                    id
                 }
                 purpose {
-                    id
                     name
+                    id
                 }
             }
         }

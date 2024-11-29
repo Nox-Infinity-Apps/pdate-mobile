@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.noxinfinity.pdate.ui.screens.chat.ConversationScreen
+import com.noxinfinity.pdate.ui.screens.edit_profile.EditProfileScreen
 import com.noxinfinity.pdate.ui.screens.empty.EmptyScreen
 import com.noxinfinity.pdate.ui.screens.main.MainScreen
 import com.noxinfinity.pdate.ui.screens.onboading.OnboardingScreen
@@ -75,6 +76,12 @@ fun RootGraph(
         composable(Graph.MESSAGE) {
             ConversationScreen(it.arguments?.getString("id")!!,
                 navController = navController
+            )
+        }
+
+        composable(Graph.EDIT_PROFILE) {
+            EditProfileScreen(
+
             )
         }
     }

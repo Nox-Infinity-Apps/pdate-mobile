@@ -36,19 +36,17 @@ fun EmptyScreen(viewModel: AuthViewModel, modifier: Modifier = Modifier) {
     ) { isGranted ->
         if (!isGranted) {
             showDialog = true
-        } else {
-            viewModel.checkLoginState()
         }
     }
 
     LaunchedEffect(Unit) {
         if (!PermissionHelper.checkLocationPermission(context)) {
             locationLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
-        } else {
-            viewModel.checkLoginState()
         }
 
+        viewModel.checkLoginState()
     }
+
 
     if (showDialog) {
         BasicAlertDialog(

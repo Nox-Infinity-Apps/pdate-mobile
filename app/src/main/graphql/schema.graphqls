@@ -58,6 +58,12 @@ type DecodedToken {
   provider: String!
 }
 
+type DontCareUserResponse implements ResponseBase {
+  status: StatusEnum!
+
+  message: String!
+}
+
 enum ErrorDetail {
   """
   Unknown error.
@@ -454,15 +460,17 @@ type Major {
 }
 
 type Mutation {
-  updateUserInfo(input: UpdateUserInfo): UserInfoResponse!
+  addToTestUser(name: String!): Response
 
-  blockUser(blockedUserId: String!): BlockUserResponse!
+  loginByGoogle(token: String!): LoginByGoogleResponse
 
-  unblockUser(blockedUserId: String!): BlockUserResponse!
+  loginByApple(token: String!): String
 
-  updateFcmTokenAndLocation(input: UpdateFcmTokenAndLocation!): UserInfoSuccessResponse!
+  like(targetUserId: String!): LikeUserResponse
 
-  updateUserPurpose(purposeIds: [Int]!): GetAllPurposeResponse!
+  unlike(targetUserId: String!): UnLikeUserResponse
+
+  GetStreamToken(UserId: String!): GetStreamTokenResult!
 
   uploadScriptWithMultipartPOST(file: Upload!): CloudinaryUploadResponse!
 
@@ -478,17 +486,17 @@ type Mutation {
 
   deletePictureById(id: String!): UserPicsMutationResponse!
 
-  GetStreamToken(UserId: String!): GetStreamTokenResult!
+  updateUserInfo(input: UpdateUserInfo): UserInfoResponse!
 
-  like(targetUserId: String!): LikeUserResponse
+  blockUser(blockedUserId: String!): BlockUserResponse!
 
-  unlike(targetUserId: String!): UnLikeUserResponse
+  unblockUser(blockedUserId: String!): BlockUserResponse!
 
-  addToTestUser(name: String!): Response
+  updateFcmTokenAndLocation(input: UpdateFcmTokenAndLocation!): UserInfoSuccessResponse!
 
-  loginByGoogle(token: String!): LoginByGoogleResponse
+  updateUserPurpose(purposeIds: [Int]!): GetAllPurposeResponse!
 
-  loginByApple(token: String!): String
+  dontCarekUser(dontCareUserId: String!): DontCareUserResponse
 }
 
 type Pics {
@@ -516,6 +524,12 @@ type Query {
 
   getAllHobbies: HobbiesResponse!
 
+  getListCategory: [Category]!
+
+  getAllConversation(limit: Int!, page: Int!): GetAllConversationResponse
+
+  getUserPics: UserPicsQueryResponse!
+
   getUserInfo: UserInfoResponse!
 
   suggestedUsers(currentLat: Float!, currentLng: Float!, offset: Int): [UserSuggest]
@@ -528,11 +542,7 @@ type Query {
 
   getAllPurpose: GetAllPurposeResponse!
 
-  getUserPics: UserPicsQueryResponse!
-
-  getAllConversation(limit: Int!, page: Int!): GetAllConversationResponse
-
-  getListCategory: [Category]!
+  getLikedUser: [UserData]
 
   _service: _Service!
 }
@@ -593,6 +603,8 @@ input UpdateUserInfo {
   hobbies: [Int]
 
   provider: String
+
+  gender: Gender
 }
 
 scalar Upload
@@ -625,6 +637,12 @@ type UserData {
   pictures: [Pics]
 
   purpose: [PurposeResponse]
+
+  gender: Gender
+
+  isActivated: Int
+
+  isVerified: Boolean
 }
 
 type UserFromGoogle {

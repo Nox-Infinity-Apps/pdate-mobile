@@ -19,84 +19,8 @@ import compose.icons.fontawesomeicons.solid.SwimmingPool
 import compose.icons.fontawesomeicons.solid.Utensils
 
 data class BioChip(
-    val chipName: String,
-    val chipIcon: @Composable () -> Unit
+    val name: String,
+    val icon: String? = null,
+    val id: Int,
 )
 
-val sampleChipList = listOf(
-    BioChip("Bogor, Jawa Barat") {
-        Icon(
-            imageVector = FontAwesomeIcons.Solid.LocationArrow,
-            contentDescription = "Location",
-            tint = Color.Red,
-            modifier = Modifier.size(16.dp)
-        )
-    },
-    BioChip("5 Common Interest") {
-        Icon(
-            imageVector = FontAwesomeIcons.Solid.Star,
-            contentDescription = "Favorite",
-            tint = Color.Yellow,
-            modifier = Modifier.size(16.dp)
-        )
-    },
-)
-
-val bioChips = listOf(
-    BioChip("Anime") {
-        Icon(
-            imageVector = FontAwesomeIcons.Solid.Film,
-            contentDescription = "Film",
-            tint = Color.Black,
-            modifier = Modifier.size(18.dp)
-        )
-    },
-    BioChip("Music") {
-        Icon(
-            imageVector = FontAwesomeIcons.Solid.Music,
-            contentDescription = "Music",
-            tint = Color.Black,
-            modifier = Modifier.size(18.dp)
-        )
-    },
-    BioChip("Digital Art") {
-        Icon(
-            imageVector = FontAwesomeIcons.Solid.PaintBrush,
-            contentDescription = "PaintBrush",
-            tint = Color.Red,
-            modifier = Modifier.size(18.dp)
-        )
-    },
-    BioChip("Cake") {
-        Icon(
-            imageVector = FontAwesomeIcons.Solid.BirthdayCake,
-            contentDescription = "BirthdayCake",
-            tint = Color.Cyan,
-            modifier = Modifier.size(18.dp)
-        )
-    },
-    BioChip("Shopping") {
-        Icon(
-            imageVector = FontAwesomeIcons.Solid.ShoppingCart,
-            contentDescription = "ShoppingCart",
-            tint = Color.Cyan,
-            modifier = Modifier.size(18.dp)
-        )
-    },
-    BioChip("Swimming") {
-        Icon(
-            imageVector = FontAwesomeIcons.Solid.SwimmingPool,
-            contentDescription = "SwimmingPool",
-            tint = Color.Blue,
-            modifier = Modifier.size(18.dp)
-        )
-    },
-    BioChip("Ramen") {
-        Icon(
-            imageVector = FontAwesomeIcons.Solid.Utensils,
-            contentDescription = "Utensils",
-            tint = Color.Black,
-            modifier = Modifier.size(18.dp)
-        )
-    }
-)

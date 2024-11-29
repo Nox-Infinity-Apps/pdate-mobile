@@ -68,7 +68,7 @@ fun HomeHeader(
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "Good Evening",
+                text = "Good Day",
                 fontSize = 14.sp,
                 color = Color.Gray
             )
@@ -76,23 +76,6 @@ fun HomeHeader(
                 text = name,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp
-            )
-        }
-        BadgedBox(
-            badge = {
-                Badge(
-                    containerColor = Color.Red,
-                    contentColor = Color.White
-                ) {
-                    Text("2")
-                }
-            },
-            Modifier.clickable(onClick = onSignOut)
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_notification),
-                contentDescription = null,
-                modifier = Modifier.size(24.dp)
             )
         }
     }

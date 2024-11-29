@@ -67,7 +67,7 @@ class HomeViewModel @Inject constructor(
             _state.value = _state.value.copy(
                 isLoading = true,
             )
-            repo.unLikeUser(id = id ?: _state.value.profileList.first()!!.fcmId)
+            repo.dontCareUser(id = id ?: _state.value.profileList.first()!!.fcmId)
             _state.value = _state.value.copy(
                 isLoading = false,
             )
@@ -80,6 +80,7 @@ class HomeViewModel @Inject constructor(
                 isLoading = true,
             )
 
+            val name = _state.value.profileList.first()?.fullName ?: ""
             val response = repo.likeUser(id ?: _state.value.profileList.first()!!.fcmId)
 
             response.fold(
@@ -89,7 +90,7 @@ class HomeViewModel @Inject constructor(
                         _state.value = _state.value.copy(
                             isDialogShow = true,
                             dialogData = DialogData(
-                                name = state.value.profileList.first()?.fullName ?: "",
+                                name = name,
                                 conversationId = (it.like?.conversationId ?: "") as String
                             )
                         )
