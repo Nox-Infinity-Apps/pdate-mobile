@@ -1,13 +1,20 @@
 package com.noxinfinity.pdate.ui.screens.chat
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -37,14 +44,23 @@ fun StreamChatScreen(
                 AppIndicator()
             }
         }else{
-            ChannelsScreen(
-                title = "Cuộc trò chuyện",
-                searchMode = SearchMode.None,
-                onChannelClick = { channelId ->
-                    rootNavController.navigate("conversation/${channelId.cid}")
-                },
+            Column {
+                Row(modifier = Modifier.background(ChatTheme.colors.appBackground).padding(
+                    vertical = 20.dp,
+                    horizontal = 20.dp
+                )) {
+                    Text("Cuộc trò chuyện", fontSize = 30.sp, fontWeight = FontWeight.SemiBold )
+                }
+                ChannelsScreen(
+                    title = "Cuộc trò chuyện",
+                    searchMode = SearchMode.None,
+                    onChannelClick = { channelId ->
+                        rootNavController.navigate("conversation/${channelId.cid}")
+                    },
+                    isShowingHeader = false
 
-            )
+                )
+            }
         }
     }
 }
