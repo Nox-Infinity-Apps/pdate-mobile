@@ -57,6 +57,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.composables.icons.lucide.BookOpen
+import com.composables.icons.lucide.Cake
+import com.composables.icons.lucide.GraduationCap
+import com.composables.icons.lucide.Lucide
 import com.noxinfinity.pdate.type.Gender
 import com.noxinfinity.pdate.ui.common.components.AppIndicator
 import com.noxinfinity.pdate.ui.common.components.NetworkImage
@@ -197,7 +201,7 @@ fun EditProfileScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text("Chỉnh sửa profile")
+//                    Text("Chỉnh sửa profile")
                 },
                 navigationIcon = {
                     if (canReturn) {
@@ -472,13 +476,13 @@ fun EditProfileScreen(
                 15.heightPadding()
 
                 EditProfileContainer(
-                    title = "Ngày tháng sinh",
+                    title = "Ngày sinh",
                     onClick = {
                         showDateModal = true
                     },
                     icon = {
                         Icon(
-                            FeatherIcons.Calendar,
+                            Lucide.Cake,
                             tint = Color(0xff797f87),
                             contentDescription = null
                         )
@@ -538,7 +542,7 @@ fun EditProfileScreen(
                     icon = {
                         if (major?.iconUrl == null) {
                             Icon(
-                                FeatherIcons.Book,
+                                Lucide.BookOpen,
                                 contentDescription = null,
                                 tint = Color(0xff797f87),
                             )
@@ -561,11 +565,11 @@ fun EditProfileScreen(
                 15.heightPadding()
 
                 EditProfileContainer(
-                    title = "Khối",
+                    title = "Khóa",
                     content = grade?.name ?: "",
                     icon = {
                         Icon(
-                            FeatherIcons.Hash,
+                            Lucide.GraduationCap,
                             contentDescription = null,
                             tint = Color(0xff797f87),
                         )

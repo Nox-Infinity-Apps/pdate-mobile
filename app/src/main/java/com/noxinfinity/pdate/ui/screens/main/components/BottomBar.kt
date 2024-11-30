@@ -1,16 +1,12 @@
 package com.noxinfinity.pdate.ui.screens.main.components
 
-import HomeIcon
-import LocationIcon
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -22,8 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.composables.icons.lucide.HardDrive
-import com.composables.icons.lucide.Heart
 import com.composables.icons.lucide.House
 import com.composables.icons.lucide.Lucide
 import com.composables.icons.lucide.MessageCircleHeart
@@ -38,7 +32,6 @@ fun BottomBar(modifier: Modifier = Modifier, navController: NavController) {
         BottomNavItem("Trang chủ", Lucide.House, Graph.HOME),
         BottomNavItem("Gần đây", Lucide.Navigation, Graph.NEARBY),
         BottomNavItem("Trò chuyện", Lucide.MessageCircleHeart, Graph.CHAT),
-        BottomNavItem("Yêu thích",Lucide.Heart, Graph.LOVE),
         BottomNavItem("Cá nhân", Lucide.UserRound, Graph.PROFILE)
     )
 

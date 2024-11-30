@@ -125,7 +125,7 @@ dependencies {
     implementation("com.mapbox.maps:android:11.8.0") {
         exclude(group = "com.google.android.gms", module = "play-services-cronet")
     }
-    implementation ("com.mapbox.extension:maps-compose:11.8.0")
+    implementation (libs.maps.compose)
 
     //Graphql
     implementation(libs.apollo.runtime)
@@ -147,10 +147,10 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.androidx.material)
-    implementation("com.composables:icons-lucide:1.0.0")
+    implementation(libs.icons.lucide)
 
 
-    implementation("com.mapbox.maps:android:10.14.0")
+    implementation(libs.android.v1180)
 
 }
 
@@ -163,7 +163,7 @@ apollo {
         packageName.set("com.noxinfinity.pdate")
         mapScalarToUpload("Upload")
         introspection {
-            endpointUrl.set("https://88a1-222-252-26-209.ngrok-free.app/graphql")
+            endpointUrl.set("http://116.118.50.169:1234/graphql")
             schemaFile.set(file("src/main/graphql/schema.graphqls"))
         }
     }

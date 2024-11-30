@@ -89,15 +89,12 @@ fun MainGraph(
             )
         }
 
-        composable(Graph.LOVE) {
-            PlaceHolder()
-        }
         composable(Graph.PROFILE) {
             ProfileScreen(
                 onSignOut = onSignOut,
                 user = (user.value as MainState.Success).user,
                 toEditProfileScreen = {
-                    rootNavController.navigate(Graph.EDIT_PROFILE)
+                    rootNavController.navigate("${Graph.EDIT_PROFILE}/true")
                 }
             )
         }

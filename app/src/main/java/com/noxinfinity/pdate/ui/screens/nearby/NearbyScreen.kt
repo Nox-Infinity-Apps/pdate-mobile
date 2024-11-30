@@ -41,6 +41,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.gms.location.LocationServices
 import com.noxinfinity.pdate.navigation.Graph
 import com.noxinfinity.pdate.ui.MainActivity
+import com.noxinfinity.pdate.ui.common.components.AppIndicator
 import com.noxinfinity.pdate.ui.common.components.MapBoxMap
 import com.noxinfinity.pdate.ui.view_models.main.MainState
 import com.noxinfinity.pdate.ui.view_models.main.MainViewModel
@@ -98,8 +99,8 @@ fun NearbyScreen(
     }
 
     if (isLoading) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            CircularProgressIndicator()
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            AppIndicator()
         }
     } else {
         Box(modifier = Modifier.fillMaxSize()) {

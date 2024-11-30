@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 fun AppIndicator(
     modifier: Modifier = Modifier,
     size: Dp = 32.dp,
-    color: Color = MaterialTheme.colorScheme.primary,
+    color: Color = Color.Red,
     strokeWidth: Dp = 5.dp,
 ) {
     CircularProgressIndicator(

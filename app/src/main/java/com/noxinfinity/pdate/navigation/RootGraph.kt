@@ -88,9 +88,7 @@ fun RootGraph(
                 canReturn = canBack,
                 onSave = {
                     navController.navigate(Graph.MAIN) {
-                        popUpTo(navController.graph.startDestinationId) {
-                            inclusive = true
-                        }
+                        popUpTo(navController.graph.startDestinationId)
                     }
                 }
             )

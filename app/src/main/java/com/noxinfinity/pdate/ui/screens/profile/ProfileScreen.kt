@@ -3,6 +3,7 @@ package com.noxinfinity.pdate.ui.screens.profile
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,8 +26,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -51,6 +50,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.composables.icons.lucide.BookOpen
+import com.composables.icons.lucide.Cake
+import com.composables.icons.lucide.CircleUserRound
+import com.composables.icons.lucide.GraduationCap
 import com.composables.icons.lucide.Locate
 import com.composables.icons.lucide.LogOut
 import com.composables.icons.lucide.Lucide
@@ -73,7 +76,12 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(modifier: Modifier = Modifier, onSignOut: () -> Unit, user: LoginByGoogleMutation.User, toEditProfileScreen: () -> Unit) {
+fun ProfileScreen(
+    modifier: Modifier = Modifier,
+    onSignOut: () -> Unit,
+    user: LoginByGoogleMutation.User,
+    toEditProfileScreen: () -> Unit
+) {
 
     val viewModel: ProfileViewModel = hiltViewModel()
     val viewState = viewModel.uiState.collectAsState()
@@ -87,11 +95,14 @@ fun ProfileScreen(modifier: Modifier = Modifier, onSignOut: () -> Unit, user: Lo
 
     Scaffold(
         topBar = {
-
-            Row(horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(
-                horizontal = 16.dp,
-                vertical = 20.dp
-            )) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(
+                    horizontal = 16.dp,
+                    vertical = 20.dp
+                )
+            ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Image(
                         painter = painterResource(id = R.drawable.ic_heart),
@@ -135,7 +146,7 @@ fun ProfileScreen(modifier: Modifier = Modifier, onSignOut: () -> Unit, user: Lo
     ) { contentPadding ->
         Column(
             modifier = Modifier.padding(contentPadding),
-        ){
+        ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -144,10 +155,12 @@ fun ProfileScreen(modifier: Modifier = Modifier, onSignOut: () -> Unit, user: Lo
                     ),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Box(modifier = Modifier.padding(
-                    top = 30.dp,
-                    bottom = 20.dp
-                )) {
+                Box(
+                    modifier = Modifier.padding(
+                        top = 30.dp,
+                        bottom = 20.dp
+                    )
+                ) {
                     Box(
                         modifier = Modifier
                             .size(150.dp)
@@ -163,10 +176,19 @@ fun ProfileScreen(modifier: Modifier = Modifier, onSignOut: () -> Unit, user: Lo
                         )
                     }
 
-                    Surface(shape = CircleShape, modifier = Modifier.align(Alignment.TopEnd)
-                        .zIndex(1f)) {
+                    Surface(
+                        shape = CircleShape, modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .zIndex(1f)
+                    ) {
                         Box(
-                            modifier = Modifier.background(Color.White).clip(CircleShape).padding(7.dp)
+                            modifier = Modifier
+                                .background(Color.White)
+                                .clip(CircleShape)
+                                .padding(7.dp)
+                                .clickable {
+                                    toEditProfileScreen()
+                                }
                         ) {
                             Icon(
                                 Lucide.Pen,
@@ -187,9 +209,11 @@ fun ProfileScreen(modifier: Modifier = Modifier, onSignOut: () -> Unit, user: Lo
                 )
                 30.heightPadding()
 
-                Column(modifier = Modifier.fillMaxWidth().background(Color(0x1EADADAD))) {
+                Column(modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color(0x1EADADAD))) {
                     CommonButton(
-                        leftIcon= {
+                        leftIcon = {
                             Icon(
                                 Lucide.User,
                                 contentDescription = null,
@@ -208,7 +232,7 @@ fun ProfileScreen(modifier: Modifier = Modifier, onSignOut: () -> Unit, user: Lo
                         color = Color(0x0C000000),
                     )
                     CommonButton(
-                        leftIcon= {
+                        leftIcon = {
                             Icon(
                                 Lucide.LogOut,
                                 contentDescription = null,
@@ -220,7 +244,8 @@ fun ProfileScreen(modifier: Modifier = Modifier, onSignOut: () -> Unit, user: Lo
                         onClick = {
                             onSignOut()
                         },
-                        color = Color.Red)
+                        color = Color.Red
+                    )
                 }
 
                 Spacer(modifier = Modifier.weight(1f))
@@ -243,7 +268,7 @@ fun ProfileScreen(modifier: Modifier = Modifier, onSignOut: () -> Unit, user: Lo
                 Box(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    if(viewState.value.isLoading ){
+                    if (viewState.value.isLoading) {
                         AppIndicator()
                     } else {
                         val item = viewState.value.user
@@ -275,7 +300,7 @@ fun ProfileScreen(modifier: Modifier = Modifier, onSignOut: () -> Unit, user: Lo
 
                             16.heightPadding()
 
-                            if(!item.purpose.isNullOrEmpty()) {
+                            if (!item.purpose.isNullOrEmpty()) {
                                 Row(
                                     horizontalArrangement = Arrangement.Start,
                                     verticalAlignment = Alignment.CenterVertically,
@@ -300,7 +325,7 @@ fun ProfileScreen(modifier: Modifier = Modifier, onSignOut: () -> Unit, user: Lo
                                 }
                             }
 
-                            12.heightPadding()
+                            8.heightPadding()
 
                             FlowRow(
                                 modifier = Modifier.fillMaxWidth(),
@@ -355,26 +380,26 @@ fun ProfileScreen(modifier: Modifier = Modifier, onSignOut: () -> Unit, user: Lo
                                 AppListTile(
                                     assets = R.drawable.gender,
                                     title = item.gender?.getString() ?: "",
-                                    headerTitle = "Khoảng cách",
-                                    icon = Lucide.Locate
+                                    headerTitle = "Giới tính",
+                                    icon = Lucide.CircleUserRound
                                 )
                                 AppListTile(
                                     assets = R.drawable.location,
                                     title = "${item.dob?.let { DateTimeHelper.formatToDDMMYYYY(it) }}",
-                                    headerTitle = "Khoảng cách",
-                                    icon = Lucide.Locate
+                                    headerTitle = "Ngày sinh",
+                                    icon = Lucide.Cake
                                 )
                                 AppListTile(
                                     assets = R.drawable.student,
                                     title = item.grade?.name ?: "",
-                                    headerTitle = "Khoảng cách",
-                                    icon = Lucide.Locate
+                                    headerTitle = "Khóa",
+                                    icon = Lucide.GraduationCap
                                 )
                                 AppListTile(
                                     assets = R.drawable.major,
                                     title = item.major?.name ?: "",
-                                    headerTitle = "Khoảng cách",
-                                    icon = Lucide.Locate
+                                    headerTitle = "Nghành",
+                                    icon = Lucide.BookOpen
                                 )
                             }
 
@@ -407,7 +432,7 @@ fun ProfileScreen(modifier: Modifier = Modifier, onSignOut: () -> Unit, user: Lo
                             10.heightPadding()
 
                             Text(
-                                text = "Photos",
+                                text = "Ảnh",
                                 fontSize = 24.sp,
                                 fontWeight = FontWeight.Bold,
                                 textAlign = TextAlign.Left,
@@ -458,7 +483,6 @@ fun ProfileScreen(modifier: Modifier = Modifier, onSignOut: () -> Unit, user: Lo
                             }
                         }
                     }
-
 
 
                 }
