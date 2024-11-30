@@ -50,6 +50,7 @@ import com.noxinfinity.pdate.SuggestedUsersQuery
 import com.noxinfinity.pdate.ui.common.components.NetworkImage
 import com.noxinfinity.pdate.ui.screens.common.AppButton
 import com.noxinfinity.pdate.ui.screens.common.AppChip
+import com.noxinfinity.pdate.utils.widthPadding
 
 @Composable
 fun HomeCardItem(
@@ -170,10 +171,11 @@ fun HomeCardItem(
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Column {
+                    Column(
+                        modifier = Modifier.weight(1f)
+                    ) {
                         Text(
                             text = "${profileData.fullName}",
                             color = Color.White,
@@ -191,6 +193,8 @@ fun HomeCardItem(
                             fontSize = 14.sp
                         )
                     }
+
+                    10.widthPadding()
 
                     AppButton(
                         modifier = Modifier

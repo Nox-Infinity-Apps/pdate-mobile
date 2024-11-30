@@ -1,10 +1,12 @@
 package com.noxinfinity.pdate.ui.screens.edit_profile.components
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -48,6 +50,7 @@ fun EditProfileContainer(
         Text(
             title,
             fontWeight = FontWeight.Bold,
+            color = Color(0xff25282b),
             fontSize = 20.sp,
             modifier = Modifier.padding(start = 12.dp)
         )
@@ -64,29 +67,34 @@ fun EditProfileContainer(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .background(
+                       color =  if(content.isNullOrEmpty()) Color(0xffFFCCCB) else Color.White
+                    )
                     .padding(
                         horizontal = 12.dp,
                         vertical = 16.dp
                     ),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                icon()
-                10.widthPadding()
+                icon().apply {
+                    modifier.size(30.dp)
+                }
+                15.widthPadding()
                 Text(
                     content ?: "",
                     modifier = Modifier.weight(1f),
+                    color = Color(0xff797f87),
                     fontWeight = FontWeight.Normal,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     fontSize = 20.sp
                 )
                 10.widthPadding()
-                Box(modifier = Modifier.size(15.dp)) {
-                    Icon(
-                        FeatherIcons.ChevronRight,
-                        contentDescription = "Edit",
-                    )
-                }
+                Icon(
+                    FeatherIcons.ChevronRight,
+                    contentDescription = "Edit",
+                    modifier = Modifier.size(15.dp)
+                )
 
             }
         }

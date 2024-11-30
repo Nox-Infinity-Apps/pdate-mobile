@@ -26,11 +26,13 @@ import com.noxinfinity.pdate.ui.common.components.NetworkImage
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Plus
+import compose.icons.fontawesomeicons.solid.PlusCircle
 
 @Composable
 fun ProfilePictureContainer(
     picture: GetUserInfoQuery.Picture?,
     addPicture: () -> Unit,
+    editPicture: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -44,7 +46,7 @@ fun ProfilePictureContainer(
                 if(picture == null) {
                     addPicture()
                 } else {
-
+                    picture.id?.let { editPicture(it.toString()) }
                 }
             },
     ) {
@@ -57,7 +59,7 @@ fun ProfilePictureContainer(
                 modifier = Modifier.size(35.dp)
             ) {
                 Icon(
-                    FontAwesomeIcons.Solid.Plus,
+                    FontAwesomeIcons.Solid.PlusCircle,
                     tint = Color(0xff797f87),
                     contentDescription = null,
                 )

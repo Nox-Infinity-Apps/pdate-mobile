@@ -42,3 +42,39 @@ mutation UpdatePictureById($file: Upload!, $id: String!) {
         message
     }
 }
+
+query GetAllHobbies {
+    getAllHobbies {
+        data {
+            iconUrl
+            id
+            title
+        }
+        message
+    }
+}
+
+mutation UpdateUserInfo($gender: Gender, $grade: Int, $major: Int, $bio: String, $dob: String, $email: String, $fullName: String, $hobbies: [Int]) {
+    updateUserInfo(
+        input: {bio: $bio, dob: $dob, email: $email, fullName: $fullName, gender: $gender, grade: $grade, hobbies: $hobbies, major: $major}
+    ) {
+        ... on UserInfoSuccessResponse {
+            message
+        }
+    }
+}
+
+query GetListGrade {
+    getListGrade {
+        id
+        name
+    }
+}
+
+query GetListMajor {
+    getListMajor {
+        iconUrl
+        id
+        name
+    }
+}

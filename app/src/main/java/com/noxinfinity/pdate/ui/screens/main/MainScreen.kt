@@ -27,6 +27,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.location.LocationServices
 import com.google.firebase.messaging.FirebaseMessaging
+import com.noxinfinity.pdate.navigation.Graph
 import com.noxinfinity.pdate.navigation.MainGraph
 import com.noxinfinity.pdate.ui.common.components.AppIndicator
 import com.noxinfinity.pdate.ui.screens.main.components.BottomBar
@@ -92,7 +93,13 @@ fun MainScreen(
     LaunchedEffect(uiState) {
         if (uiState is MainState.Error && (uiState as MainState.Error).tokenTimeOut) {
             authViewModel.signOut {
-
+            }
+        }
+        if(uiState is MainState.Success && (uiState as MainState.Success).isNew) {
+            navController.navigate("${Graph.EDIT_PROFILE}/false") {
+                popUpTo(navController.graph.startDestinationId) {
+                    inclusive = true
+                }
             }
         }
     }
