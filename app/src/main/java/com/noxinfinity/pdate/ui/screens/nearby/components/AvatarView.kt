@@ -27,6 +27,8 @@ fun AvatarView(
     modifier: Modifier = Modifier,
     avatar: String?,
     userId: String?,
+    onClick: () -> Unit = {},
+    isMe: Boolean = false
 ) {
     ViewAnnotation(
         options = viewAnnotationOptions {
@@ -41,10 +43,14 @@ fun AvatarView(
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.border(2.dp, Color.Black)
                     .clickable(onClick = {
-                        navController.navigate(Graph.PROFILE) {
-                            popUpTo(navController.graph.startDestinationId) {
-                                inclusive = true
+                        if (isMe) {
+                            navController.navigate(Graph.PROFILE) {
+                                popUpTo(navController.graph.startDestinationId) {
+                                    inclusive = true
+                                }
                             }
+                        }else{
+                            onClick()
                         }
                     }).fillMaxSize().clip(CircleShape)
             )

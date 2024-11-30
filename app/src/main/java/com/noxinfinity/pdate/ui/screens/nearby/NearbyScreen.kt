@@ -63,6 +63,7 @@ fun NearbyScreen(
     val fusedLocationClient = remember { LocationServices.getFusedLocationProviderClient(context) }
     val nearByViewModel: NearByViewModel = hiltViewModel()
 
+
     var currentLocationPoint by remember { mutableStateOf<Point?>(null) }
     var isLoading by remember { mutableStateOf(true) }
 
