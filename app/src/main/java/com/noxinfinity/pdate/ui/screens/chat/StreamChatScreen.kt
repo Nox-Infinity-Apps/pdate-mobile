@@ -43,6 +43,7 @@ fun StreamChatScreen(
                 onChannelClick = { channelId ->
                     rootNavController.navigate("conversation/${channelId.cid}")
                 },
+
             )
         }
     }
