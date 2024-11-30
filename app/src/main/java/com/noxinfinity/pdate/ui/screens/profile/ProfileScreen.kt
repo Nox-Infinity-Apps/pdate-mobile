@@ -118,30 +118,7 @@ fun ProfileScreen(
                     )
                 }
                 Spacer(modifier = Modifier.weight(1f))
-                Icon(
-                    Lucide.Settings,
-                    contentDescription = null,
-                    modifier = Modifier.size(30.dp)
-                )
             }
-
-//            Box(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(12.dp)
-//            ) {
-//                IconButton(
-//                    onClick = toEditProfileScreen,
-//                    modifier = Modifier.align(Alignment.CenterEnd)
-//                ) {
-//                    Icon(
-//                        FontAwesomeIcons.Solid.Edit,
-//                        modifier = Modifier.padding(6.dp),
-//                        contentDescription = null
-//                    )
-//                }
-//            }
-
         }
     ) { contentPadding ->
         Column(

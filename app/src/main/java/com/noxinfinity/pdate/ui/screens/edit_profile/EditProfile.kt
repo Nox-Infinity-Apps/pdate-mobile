@@ -1,5 +1,6 @@
 package com.noxinfinity.pdate.ui.screens.edit_profile
 
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -41,12 +42,14 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -57,10 +60,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.composables.icons.lucide.BookOpen
 import com.composables.icons.lucide.Cake
 import com.composables.icons.lucide.GraduationCap
 import com.composables.icons.lucide.Lucide
+import com.noxinfinity.pdate.navigation.Graph
 import com.noxinfinity.pdate.type.Gender
 import com.noxinfinity.pdate.ui.common.components.AppIndicator
 import com.noxinfinity.pdate.ui.common.components.NetworkImage
@@ -100,11 +105,12 @@ fun EditProfileScreen(
     modifier: Modifier = Modifier,
     onBack: () -> Unit,
     onSave: () -> Unit,
+    navController: NavController,
     canReturn: Boolean = true
 ) {
     val viewModel: EditProfileViewModel = hiltViewModel()
-    val state = viewModel.uiState.collectAsState()
-    val user = state.value.user
+    val state = viewModel.uiState.collectAsState().value
+    val user = state.user
     var currentImage = ""
 
     val context = LocalContext.current
@@ -195,13 +201,30 @@ fun EditProfileScreen(
         mutableStateOf(user.gender ?: Gender.OTHER)
     }
 
+    LaunchedEffect(Unit) {
+        Log.d("FETCH_USER HOME", state.toString())
+        snapshotFlow { state }
+            .collect { value ->
+                if (value.isFilling) {
+                    Log.d("FETCH_USER HOME", value.toString())
+                    fullNameText = value.user.fullName
+                    bioText = value.user.bio ?: ""
+                    dobText = value.user.dob ?: ""
+                    email = value.user.email
+                    grade = value.user.grade
+                    major = value.user.major
+                }
+
+            }
+    }
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
         containerColor = Color(0xfff3f3f3),
         topBar = {
             TopAppBar(
                 title = {
-//                    Text("Chỉnh sửa profile")
+                    Text("Chỉnh sửa profile")
                 },
                 navigationIcon = {
                     if (canReturn) {
@@ -226,16 +249,25 @@ fun EditProfileScreen(
                                 major != null &&
                                 user.gender != null && !user.purpose.isNullOrEmpty() && !user.hobbies.isNullOrEmpty()
                             ) {
-                                viewModel.updateUser(
-                                    gender = gender,
-                                    grade = grade!!.id!!,
-                                    bio = bioText,
-                                    email = email,
-                                    fullName = fullNameText,
-                                    dob = dobText,
-                                    major = major!!.id!!
-                                )
-                                onSave()
+                                coroutineScope.launch {
+                                    launch {
+                                        viewModel.updateUser(
+                                            gender = gender,
+                                            grade = grade!!.id!!,
+                                            bio = bioText,
+                                            email = email,
+                                            fullName = fullNameText,
+                                            dob = dobText,
+                                            major = major!!.id!!
+                                        )
+                                    }.join()
+                                    if (canReturn) {
+                                        navController.popBackStack()
+                                    } else {
+                                        navController.navigate(Graph.MAIN)
+                                    }
+                                    onSave()
+                                }
                             }
                         }
                     ) {
@@ -245,7 +277,7 @@ fun EditProfileScreen(
             )
         }
     ) { paddingValues ->
-        if (state.value.isFetching) {
+        if (state.isFetching) {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -487,7 +519,7 @@ fun EditProfileScreen(
                             contentDescription = null
                         )
                     },
-                    content = dobText
+                    content = DateTimeHelper.formatToDDMMYYYY(dobText)
                 )
 
                 15.heightPadding()
@@ -537,7 +569,7 @@ fun EditProfileScreen(
                 15.heightPadding()
 
                 EditProfileContainer(
-                    title = "Nghành",
+                    title = "Ngành",
                     content = major?.name ?: "",
                     icon = {
                         if (major?.iconUrl == null) {
@@ -590,8 +622,8 @@ fun EditProfileScreen(
         if (purposeSheetState.isVisible) {
             PurposeModalBottomSheet(
                 sheetState = purposeSheetState,
-                isLoading = state.value.isLoading,
-                allItems = state.value.purposeList,
+                isLoading = state.isLoading,
+                allItems = state.purposeList,
                 chosenItem = user.purpose ?: listOf(),
                 onSave = {
                     viewModel.updatePurpose(it)
@@ -680,8 +712,8 @@ fun EditProfileScreen(
         if (hobbiesSheetState.isVisible) {
             HobbiesModalBottomSheet(
                 sheetState = hobbiesSheetState,
-                isLoading = state.value.isLoading,
-                allItems = state.value.hobbiesList,
+                isLoading = state.isLoading,
+                allItems = state.hobbiesList,
                 chosenItem = user.hobbies ?: listOf(),
                 onSave = {
                     viewModel.updateHobbies(it)
@@ -723,8 +755,8 @@ fun EditProfileScreen(
                         gradeSheetState.hide()
                     }
                 },
-                isLoading = state.value.isLoading,
-                listGrade = state.value.gradeList
+                isLoading = state.isLoading,
+                listGrade = state.gradeList
             )
         }
 
@@ -737,14 +769,12 @@ fun EditProfileScreen(
                         majorSheetState.hide()
                     }
                 },
-                isLoading = state.value.isLoading,
-                listMajor = state.value.majorList
+                isLoading = state.isLoading,
+                listMajor = state.majorList
             )
         }
 
     }
-
-
 }
 
 @Composable

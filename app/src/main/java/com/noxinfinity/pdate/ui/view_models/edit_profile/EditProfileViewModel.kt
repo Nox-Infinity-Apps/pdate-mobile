@@ -29,10 +29,12 @@ class EditProfileViewModel @Inject constructor(
 
     init {
         fetchUser()
+        _uiState.value = _uiState.value.copy(isFilling = true)
+        _uiState.value = _uiState.value.copy(isFilling = false)
     }
 
     private fun fetchUser() {
-        _uiState.value = EditProfileState(isFetching = true)
+        _uiState.value = _uiState.value.copy(isFetching = true)
         try {
             viewModelScope.launch {
                 val response = profileRepository.getProfile()
@@ -40,6 +42,7 @@ class EditProfileViewModel @Inject constructor(
                 response.fold(
                     onSuccess = {
                         _uiState.value = _uiState.value.copy(user = it!!)
+                        Log.d("FETCH_USER", it.toString())
                     },
                     onFailure = {
                         Log.d("FETCH_USER FAILED", it.message ?: "Unknown error")
@@ -51,11 +54,11 @@ class EditProfileViewModel @Inject constructor(
             Log.d("FETCH_USER FAILED", e.message ?: "Unknown error")
         }
 
-        _uiState.value = EditProfileState(isFetching = false)
+        _uiState.value = _uiState.value.copy(isFetching = false)
     }
 
     fun uploadAvatar(file: File) {
-        _uiState.value = _uiState.value.copy(isLoading = true)
+        _uiState.value = _uiState.value.copy(isFetching = true)
         viewModelScope.launch {
             editProfileRepository.uploadAvatar(file)
                 .fold(
@@ -68,7 +71,7 @@ class EditProfileViewModel @Inject constructor(
                     }
                 )
         }
-        _uiState.value = _uiState.value.copy(isLoading = false)
+        _uiState.value = _uiState.value.copy(isFetching = false)
     }
 
     fun getAllPurpose() {
@@ -115,6 +118,7 @@ class EditProfileViewModel @Inject constructor(
     }
 
     fun uploadPicture(file: File) {
+        _uiState.value = _uiState.value.copy(isFetching = true)
         viewModelScope.launch{
             val response = editProfileRepository.uploadPicture(file)
             Log.d("Upload Picture", response.toString())
@@ -127,14 +131,15 @@ class EditProfileViewModel @Inject constructor(
                     Log.e("Get All Purpose Error", it.toString())
                 }
             )
-
         }
+        _uiState.value = _uiState.value.copy(isFetching = false)
     }
 
     fun deletePictureById(id: String) {
+        _uiState.value = _uiState.value.copy(isFetching = true)
         viewModelScope.launch{
             val response = editProfileRepository.deletePictureById(id)
-
+            Log.d("Edit Profile", response.toString())
             response.fold(
                 onSuccess = {
                     fetchUser()
@@ -144,9 +149,11 @@ class EditProfileViewModel @Inject constructor(
                 }
             )
         }
+        _uiState.value = _uiState.value.copy(isFetching = false)
     }
 
     fun updatePictureById(file: File, id: String) {
+        _uiState.value = _uiState.value.copy(isFetching = true)
         viewModelScope.launch{
             val response = editProfileRepository.updatePictureById(file, id)
 
@@ -159,6 +166,7 @@ class EditProfileViewModel @Inject constructor(
                 }
             )
         }
+        _uiState.value = _uiState.value.copy(isFetching = false)
     }
 
     fun getAllHobbies() {
@@ -191,6 +199,7 @@ class EditProfileViewModel @Inject constructor(
     }
 
     fun updateHobbies(hobbies: List<Int>) {
+        _uiState.value = _uiState.value.copy(isFetching = true)
         viewModelScope.launch{
             val response = editProfileRepository.updateUserInfo(
                 hobbies = hobbies,
@@ -205,6 +214,7 @@ class EditProfileViewModel @Inject constructor(
                 }
             )
         }
+        _uiState.value = _uiState.value.copy(isFetching = false)
     }
 
     fun getListGrade() {
@@ -264,15 +274,22 @@ class EditProfileViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(isLoading = false)
     }
 
-    fun updateUser(gender: Gender? = null,
+    fun updateUser(
+        gender: Gender? = null,
                       grade: Int? = null,
                       major: Int? = null,
                       bio: String? = null,
                       dob: String? = null,
                       email: String? = null,
                       fullName: String? = null,
-                      hobbies: List<Int>? = null,) {
+                      hobbies: List<Int>? = null,
+        ) {
+        _uiState.value = _uiState.value.copy(isFetching = true)
+
         viewModelScope.launch{
+
+            Log.d("Update User", bio ?: "")
+
             val response = editProfileRepository.updateUserInfo(
                 gender = gender,
                 grade = grade,
@@ -284,15 +301,18 @@ class EditProfileViewModel @Inject constructor(
                 hobbies = hobbies
             )
 
+
+
             response.fold(
                 onSuccess = {
-                    Log.d("Update Hobbies Success", it.toString())
+                    Log.d("Update User Success", it.toString())
                 },
                 onFailure = {
-                    Log.e("Update Hobbies Error", it.toString())
+                    Log.e("Update User Error", it.toString())
                 }
             )
         }
+        _uiState.value = _uiState.value.copy(isFetching = false)
     }
 
 }

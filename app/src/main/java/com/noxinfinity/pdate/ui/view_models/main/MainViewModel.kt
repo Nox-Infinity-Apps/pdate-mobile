@@ -45,7 +45,7 @@ class MainViewModel @Inject constructor(
                                 tokenTimeOut = true,
                             )
                         } else {
-                            Log.d("FETCH_USER ACCESS TOKEN", it.accessToken)
+                            Log.d("FETCH_USER ACCESS TOKEN", it.user.toString())
                             sharedPreferencesManager.saveAccessToken(it.accessToken)
                             _uiState.value = MainState.Success(
                                 isNew = (it).isNew,

@@ -12,6 +12,7 @@ data class EditProfileState (
     val majorList: List<GetUserInfoQuery.Major?> = listOf(),
     val gradeList: List<GetUserInfoQuery.Grade?> = listOf(),
     val isLoading: Boolean = false,
-    val isFetching: Boolean = false,
+    val isFetching: Boolean = true,
+    val isFilling: Boolean = false
 )
 

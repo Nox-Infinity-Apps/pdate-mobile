@@ -80,16 +80,16 @@ fun RootGraph(
         }
 
         composable("${Graph.EDIT_PROFILE}/{canPop}") { backStackEntry ->
-            val canBack = backStackEntry.arguments?.getBoolean("canPop") ?: true
+            val canBack = backStackEntry.arguments?.getString("canPop") ?: "true"
             EditProfileScreen(
                 onBack =  {
                     navController.popBackStack()
                 },
-                canReturn = canBack,
+                canReturn = (canBack == "true"),
+                navController = navController,
                 onSave = {
-                    navController.navigate(Graph.MAIN) {
-                        popUpTo(navController.graph.startDestinationId)
-                    }
+//                    navController.navigate(Graph.MAIN)
+                    viewModel.resetAvatar()
                 }
             )
         }

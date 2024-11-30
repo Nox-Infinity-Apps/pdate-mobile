@@ -41,6 +41,15 @@ class AuthViewModel @Inject constructor(
 
     }
 
+    fun resetAvatar() {
+        _authState.value = _authState.value.copy(
+            isReloadAvatar = true,
+        )
+        _authState.value = _authState.value.copy(
+            isReloadAvatar = false,
+        )
+    }
+
     fun firebaseAuthWithGoogle(idToken: String) {
         viewModelScope.launch {
             val credential = GoogleAuthProvider.getCredential(idToken, null)

@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -90,17 +91,31 @@ fun MainScreen(
 
     val uiState by viewModel.uiState.collectAsState()
 
+    LaunchedEffect(authViewModel.authState) {
+        snapshotFlow {
+            authViewModel.authState.value.isReloadAvatar
+        }.collect{
+            if(it) {
+                viewModel.fetchUser()
+            }
+        }
+    }
+
     LaunchedEffect(uiState) {
         if (uiState is MainState.Error && (uiState as MainState.Error).tokenTimeOut) {
             authViewModel.signOut {
             }
         }
-        if(uiState is MainState.Success && (uiState as MainState.Success).isNew) {
-            navController.navigate("${Graph.EDIT_PROFILE}/false") {
-                popUpTo(navController.graph.startDestinationId) {
-                    inclusive = true
+
+        if(uiState is MainState.Success) {
+            if((uiState as MainState.Success).isNew) {
+                navController.navigate("${Graph.EDIT_PROFILE}/false") {
+                    popUpTo(navController.graph.startDestinationId) {
+                        inclusive = true
+                    }
                 }
             }
+
         }
     }
 

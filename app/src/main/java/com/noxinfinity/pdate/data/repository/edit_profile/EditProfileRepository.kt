@@ -117,6 +117,7 @@ class EditProfileRepository @Inject constructor(
         fullName: String? = null,
         hobbies: List<Int>? = null,
     ) :Result<UpdateUserInfoMutation.Data> {
+
         return try {
             val response = client.mutation(
                 UpdateUserInfoMutation(
@@ -131,6 +132,7 @@ class EditProfileRepository @Inject constructor(
                     ))
                 .execute()
             val data = response.dataOrThrow()
+            Log.d("Validation", data.updateUserInfo.toString())
             return Result.success(data)
         } catch (e: Exception) {
             Log.d("EditProfileRepository Error", e.message ?: "")

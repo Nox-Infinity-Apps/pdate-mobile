@@ -60,6 +60,14 @@ mutation UpdateUserInfo($gender: Gender, $grade: Int, $major: Int, $bio: String,
     ) {
         ... on UserInfoSuccessResponse {
             message
+            data {
+                avatar
+                bio
+                dob
+                email
+                fullName
+                gender
+            }
         }
     }
 }
