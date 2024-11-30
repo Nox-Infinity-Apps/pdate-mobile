@@ -15,12 +15,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -47,6 +50,7 @@ import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.viewannotation.geometry
 import com.mapbox.maps.viewannotation.viewAnnotationOptions
 import com.noxinfinity.pdate.R
+import com.noxinfinity.pdate.SuggestUsersNearByQuery
 import com.noxinfinity.pdate.navigation.Graph
 import com.noxinfinity.pdate.ui.screens.nearby.components.AvatarView
 import com.noxinfinity.pdate.ui.view_models.main.MainState
@@ -58,7 +62,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 @SuppressLint("CoroutineCreationDuringComposition", "MissingPermission")
-@OptIn(DelicateCoroutinesApi::class)
+@OptIn(DelicateCoroutinesApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun MapBoxMap(
 	navController: NavController,
@@ -70,6 +74,15 @@ fun MapBoxMap(
 	val context = LocalContext.current
 	val mainState = mainViewModel.uiState.collectAsState().value
 	val nearByViewState = nearByViewModel.state.collectAsState().value
+	val coroutineScope = rememberCoroutineScope()
+
+	val sheetState = rememberModalBottomSheetState(
+		skipPartiallyExpanded = true,
+	)
+
+	var targetUser by remember { mutableStateOf< SuggestUsersNearByQuery. SuggestedUsersNearBy?>(null) }
+
+
 
 	val user = (mainState as MainState.Success).user
 
@@ -121,6 +134,7 @@ fun MapBoxMap(
 			}
 		}
 
+
 		MapboxMap(
 			modifier = Modifier.fillMaxSize(),
 			mapViewportState = mapViewportState,
@@ -134,11 +148,16 @@ fun MapBoxMap(
 			logo = {},
 			compass = {}
 		){
+			if(sheetState.isVisible) {
+				ProfileSheet(sheetState, targetUser, coroutineScope)
+			}
+
 			AvatarView(
 				navController = navController,
 				userPoint = userPoint,
 				avatar = user.avatar,
 				userId = user.fcm_id,
+				isMe = true
 			)
 			nearByViewState.nearByUsersList.forEach { user ->
 				if(user?.lat == null || user.lng == null) return@forEach else {
@@ -147,7 +166,14 @@ fun MapBoxMap(
 							navController = navController,
 							userPoint = Point.fromLngLat(user.lng, user.lat),
 							avatar = user.avatarUrl,
-							userId = user.fcmId
+							userId = user.fcmId,
+							isMe = false,
+							onClick = {
+								targetUser = user
+								coroutineScope.launch {
+									sheetState.show()
+								}
+							}
 						)
 					}
 				}

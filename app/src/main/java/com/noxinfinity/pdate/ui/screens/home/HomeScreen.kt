@@ -84,7 +84,7 @@ fun HomeScreen(
                     Button(
                         onClick = {
                             homeViewModel.onDismissDialog()
-                            rootNavController.navigate("conversation/${viewState.dialogData.conversationId}")
+                            navController.navigate(Graph.CHAT)
                         },
                         colors = ButtonColors(
                             containerColor = Color(0xffff4459),
